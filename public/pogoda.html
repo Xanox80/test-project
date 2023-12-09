@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+</head>
+<body>
+    <style>
+        body{
+        background-image: url("тал.jpg");
+        }
+   /* styles.css */
+
+/* General Styles */
+/* Reset styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2; /* Set a light background color */
+}
+
+/* Container */
+.container {
+    background: plum; /* Darker background color */
+    color: #fff;
+    padding: 2rem;
+    width: 60%; /* Slightly wider container */
+    margin: 4rem auto;
+    border-radius: 10px;
+    box-shadow: green /* Add a subtle box shadow */
+}
+
+/* Header */
+.weather__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Input */
+input {
+    border: none;
+    background: #444; /* Darker input background color */
+    color: blue;
+    padding: 0.5rem 2rem; /* Slightly shorter padding */
+    border-radius: 5px;
+    outline: none;
+    width: 70%;
+}
+
+input::placeholder {
+    color: #aaa; /* Lighter placeholder text color */
+}
+
+.weather__searchform {
+    position: relative;
+}
+
+.weather__search i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+    color: #aaa; /* Lighter icon color */
+}
+
+/* Units */
+.weather__units {
+    font-size: 1.5rem;
+}
+
+.weather__units span {
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+/* Body */
+.weather__body {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+/* Forecast */
+.weather__forecast {
+    background: white; /* Darker forecast background color */
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+}
+
+/* Icon */
+.weather__icon img {
+    width: 100px;
+}
+
+/* Temperature */
+.weather__temperature {
+    font-size: 1.75rem;
+    color: #6669ff; /* Set a different color for temperature */
+}
+
+/* MinMax */
+.weather__minmax {
+    display: flex;
+    justify-content: center;
+    font-size: 14px;
+    margin: 0.5rem;
+    color: #aaa; /* Lighter text color for min/max */
+}
+
+/* Info */
+.weather_info {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 3rem;
+}
+
+.weather__card {
+    display: flex;
+    align-items: center;
+    background: white; /* Darker card background color */
+    padding: 1rem;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Media Queries */
+@media (max-width: 936px) {
+    .container {
+        width: 90%;
+    }
+
+    .weather__header {
+        flex-direction: column;
+    }
+
+    .weather__units {
+        margin-top: 1rem;
+    }
+
+    input {
+        width: 100%;
+    }
+}
+
+@media (max-width: 400px) {
+    .weather_info {
+        flex-direction: column;
+    }
+}
+
+
+
+    </style>
+    <div class="container">
+        <div class="weather__search">
+            <!-- Updated class name for consistency -->
+            <form class="weather__searchform">
+                <input type="text" placeholder="Search for a city..." class="weather__searchfrom">
+                <i class="fas fa-search"></i>
+            </form>
+        </div>
+        <div class="weather__units">
+            <span class="weather__units_celsius">&#176C</span>
+            <span class="weather__units_farenheit">&#176F</span>
+        </div>
+    </div>
+    <div class="weather__body">
+        <h1 class="weather__city"></h1>
+        <div class="weather__datetime"></div>
+        <div class="weather__forecast"></div>
+        <div class="weather__icon"></div>
+        <p class="weather__temperature"></p>
+        <div class="weather__minmax">
+            <p>Min: 12&#176;</p>
+            <p>Max: 16&#176;</p>
+        </div>
+    </div>
+    <div class="weather_info">
+        <div class="weather__card">
+            <i class="fas fa-temperature-full"></i>
+            <div>
+                <p>Real Feel</p>
+                <p class="weather__realfeel">18&#176;</p>
+            </div>
+        </div>
+        <div class="weather__card">
+            <i class="fas fa-droplet"></i>
+            <div>
+                <p>Humidity</p>
+                <p class="weather__humidity">18&#176;</p>
+            </div>
+        </div>
+        <div class="weather__card">
+            <i class="fas fa-wind"></i>
+            <div>
+                <p>Wind</p>
+                <p class="weather__wind">18&#176;</p>
+            </div>
+        </div>
+        <div class="weather__card">
+            <i class="fas fa-gauge-high"></i>
+            <div>
+                <p>Pressure</p>
+                <p class="weather__pressure">18&#176;</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit-id.js" crossorigin="anonymous"></script>
+    <script>
+        let currCity = "London";
+let units = "metric";
+
+let city = document.querySelector(".weather__city");
+let datetime = document.querySelector(".weather__datetime");
+let weather__forecast = document.querySelector('.weather__forecast');
+let weather__temperature = document.querySelector(".weather__temperature");
+let weather__icon = document.querySelector(".weather__icon");
+let weather__minmax = document.querySelector(".weather__minmax");
+let weather__realfeel = document.querySelector('.weather__realfeel');
+let weather__humidity = document.querySelector('.weather__humidity');
+let weather__wind = document.querySelector('.weather__wind');
+let weather__pressure = document.querySelector('.weather__pressure');
+
+document.querySelector(".weather__search form").addEventListener('submit', e => {
+    let search = document.querySelector('.weather__searchfrom');
+
+    e.preventDefault();
+
+    currCity = search.value;
+    getWeather();
+
+    search.value = "";
+});
+
+document.querySelector(".weather__units_celsius").addEventListener('click', () => {
+    if (units !== "metric") {
+        units = "metric";
+        getWeather();
+    }
+});
+
+document.querySelector(".weather__units_farenheit").addEventListener('click', () => {
+    if (units !== "imperial") {
+        units = "imperial";
+        getWeather();
+    }
+});
+
+document.addEventListener('DOMContentLoaded', getWeather);
+
+function convertTimeStamp(timestamp, timezone) {
+    // ... (no change)
+}
+
+function convertCountryCode(country) {
+    // ... (no change)
+}
+// Updated selector to match the HTML class name
+document.querySelector(".weather__searchfrom").addEventListener('submit', e => {
+    let search = document.querySelector('.weather__searchfrom');
+
+    e.preventDefault();
+
+    currCity = search.value;
+    getWeather();
+
+    search.value = "";
+});
+
+function getWeather() {
+    // Use your own OpenWeatherMap API key
+    const API_KEY = '611fad48ba25931ee905db4e3aace285';
+
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${currCity}&appid=${API_KEY}&units=${units}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            city.innerHTML = `${data.name}, ${convertCountryCode(data.sys.country)}`
+            datetime.innerHTML = convertTimeStamp(data.dt, data.timezone);
+            weather__forecast.innerHTML = `<p>${data.weather[0].main}`;
+            weather__temperature.innerHTML = `${data.main.temp.toFixed()}&#176`;
+            weather__icon.innerHTML = `<img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png" />`;
+            weather__minmax.innerHTML = `<p>Min: ${data.main.temp_min.toFixed()}&#176;</p>
+            <p>Max: ${data.main.temp_max.toFixed()}&#176`;
+            weather__realfeel.innerHTML = `${data.main.feels_like.toFixed()}&#176`;
+            weather__humidity.innerHTML = `${data.main.humidity}%`;
+            weather__wind.innerHTML = `${data.wind.speed} ${units === "imperial" ? "mph" : "m/s"}`;
+            weather__pressure.innerHTML = `${data.main.pressure} hPa`;
+        });
+}
+
+    </script>
+
+    <script>
+        const http = require("http");
+const fs = require('fs').promises;
+
+const host = 'localhost';
+const port = 7000;
+
+const requestListener = function (req, res) {
+    fs.readFile(__dirname + "/index.html")
+        .then(contents => {
+            res.setHeader("Content-Type", "text/html");
+            res.writeHead(200);
+            res.end(contents);
+        })
+        .catch(err => {
+            res.writeHead(500);
+            res.end(err);
+            return;
+        });
+};
+
+
+
+const server = http.createServer(requestListener);
+
+fs.readFile(__dirname + "/index.html")
+    .then(contents => {
+        indexFile = contents;
+        server.listen(port, host, () => {
+            console.log(`Server is running on http://${host}:${port}`);
+        });
+    })
+    .catch(err => {
+        console.error(`Could not read index.html file: ${err}`);
+        process.exit(1);
+    });
+    </script>
+</body>
+</html>

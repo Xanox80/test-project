@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our site</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div>
+        <header class="header">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">Navbar</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Features</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Pricing</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link disabled" href="#" tabindex="-1"
+                                        aria-disabled="true">Disabled</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <main>
+            <div class="container">
+                <h1>Hello page</h1>
+                <div class="row">
+                    <h3>Last news</h3>
+                    <div class="col-lg-6">
+                        <h3>Login</h3>
+                        <form id="loginform">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required>
+
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+
+                            <button type="submit">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link 1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link 2</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link 3</a>
+                </li>
+            </ul>
+            <div class="copyright">&copy; 2020 All rights reserved</div>
+        </div>
+    </footer>
+    <script>
+        //обработчик для кнопки логин//
+        const loginform = document.querySelector('#loginform');
+
+        loginform.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const formdata = new FormData(loginform);
+    const data = Object.fromEntries(formdata.entries());
+
+    try {
+        const response = await fetch('/user/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            console.error(`Server error: ${errorMessage}`);
+            // Handle the error here, show a message to the user or redirect appropriately
+            return;
+        }
+
+        const result = await response.json(); // assuming the response is in JSON format
+        if (!result.success) {
+            // Handle the login failure here, show a message to the user
+            console.error(`Error during login: ${result.message}`);
+            return;
+        }
+
+        alert('Login successful');
+        // Redirect to the HTML page
+        window.location.href = 'j.html';
+    } catch (error) {
+        console.error('Error during login:', error.message);
+        // Handle other errors here
+    }
+});
+
+    </script>
+</body>
+
+</html>
