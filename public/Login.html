@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Site</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+         body {
+            background: linear-gradient(to right, #8e2de2, #4a00e0);
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #292b2c;
+            padding: 15px 0;
+        }
+
+        .navbar {
+            padding: 0;
+        }
+
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+
+        #loginform {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        #loginform label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #loginform input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #loginform button {
+            background: linear-gradient(to right, #34e89e, #0f3443);
+            color: #fff;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 51px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        #loginform button:hover {
+            background: linear-gradient(to center, #0f3443, #34e89e);
+        }
+
+        .footer {
+            background-color: #292b2c;
+            padding: 15px 0;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <header class="header">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <!-- Add your navigation items here -->
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="container">
+                <div class="col-lg-6">
+                    <h3 class="mb-4">Login</h3>
+                    <form id="loginform">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required>
+
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                        <a href="auto.html">
+                            <button type="button">Sing in
+                            </button>
+
+                        <button type="submit">Login</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <!-- Add your footer content here -->
+        </div>
+    </footer>
+    <script>
+        const loginform = document.querySelector('#loginform');
+
+        loginform.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formdata = new FormData(loginform);
+            const data = Object.fromEntries(formdata.entries());
+
+            try {
+                const response = await fetch('/user/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    const errorMessage = await response.text();
+                    console.error(`Server error: ${errorMessage}`);
+                    return;
+                }
+
+                const result = await response.json();
+                if (!result.success) {
+                    console.error(`Error during login: ${result.message}`);
+                    return;
+                }
+
+                alert('Login successful');
+                window.location.href = 'Golovna.html';
+            } catch (error) {
+                console.error('Error during login:', error.message);
+            }
+        });
+    </script>
+</body>
+
+</html>

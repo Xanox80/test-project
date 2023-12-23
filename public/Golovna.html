@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сайт нерухомості</title>
+    <!-- Додайте посилання на ваші CSS файли тут -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #3498db;
+        }
+
+        section {
+            margin: 20px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        footer {
+            margin: 20px;
+            text-align: center;
+            color: #777;
+        }
+
+        .weather-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .weather-button button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .weather-button button:hover {
+            background-color: #2980b9;
+        }
+
+        .weather-button img {
+            width: 20px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ласкаво просимо на сайт нерухомості</h1>
+        <p>Знайдіть ідеальний будинок або квартиру для себе</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#home">Головна</a></li>
+            <li><a href="appeal.html">Додати оголошення</a></li>
+            <li><a href="Create.html">Додати Апартаменти</a></li>
+        </ul>
+    </nav>
+
+    <section>
+        <div class="w-button">
+            <button id="getDataButton" type="button">Переглянути Квартири</button>
+            <div id="notes-container"></div>
+            <button id="deleteNoteButton" onclick="deleteNote('noteIdToBeDeleted')">Delete House</button>
+
+        </div>
+
+        <div class="w-button">
+            <button id="getDataButtonHouse" type="button">Переглянути Будинки</button>
+            <div id="notes-container-house"></div>
+            <button id="deleteApartmentsButton" onclick="deleteNote('noteIdToBeDeletedApartmentsі')">Delete Note</button>
+        </div>
+        <div class="w-button">
+            <button id="getDataButtonVilla" type="button">Переглянути Віллу</button>
+            <div id="notes-container-villa"></div>
+            <button id="deleteVillaButton" onclick="deleteNote('noteIdToBeDeletedVilla')">Delete Villa</button>
+        </div>
+    </section>
+
+    <div class="weather-button">
+        <a href="pogoda.html">
+            <button type="button">Погода</button>
+        </a>
+    </div>
+
+    <footer>
+        &copy; 2023 Ваша компанія. Усі права захищені.
+    </footer>
+
+    <script>
+        //////////////////////////////////////////////////
+        document.getElementById('getDataButton').addEventListener('click', fetchAndDisplayNotes);
+document.getElementById('getDataButtonHouse').addEventListener('click', fetchAndDisplayApartments);
+document.getElementById('getDataButtonVilla').addEventListener('click', fetchAndDisplayVilla);
+
+// Remove the window.addEventListener('load', ...) for each function
+
+async function fetchAndDisplayNotes() {
+    try {
+        const response = await fetch('/golovna/api/getAllNotes');
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+
+        if (Array.isArray(responseData)) {
+            const notesContainer = document.getElementById('notes-container');
+            notesContainer.innerHTML = '';
+
+            responseData.forEach(note => {
+                const noteDiv = document.createElement('div');
+                noteDiv.innerHTML = `<strong>Name:</strong> ${note.Name}<br>
+                     <strong>Surname:</strong> ${note.Surname}<br>
+                     <strong>Price:</strong> ${note.price}<br>
+                     <strong>Residence:</strong> ${note.residence}<br><br>`;
+                notesContainer.appendChild(noteDiv);
+            });
+        } else {
+            console.error('Invalid or missing data in the response', responseData);
+        }
+    } catch (error) {
+        console.error('Error fetching notes:', error.message);
+    }
+}
+
+async function fetchAndDisplayApartments() {
+    try {
+        const response = await fetch('/gol/api/getAllApartments');
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const responseDataApartments = await response.json();
+
+        if (Array.isArray(responseDataApartments)) {
+            const notesContainerHouse = document.getElementById('notes-container-house');
+            notesContainerHouse.innerHTML = '';
+
+            responseDataApartments.forEach(note => {
+                const noteDiv = document.createElement('div');
+                noteDiv.innerHTML = `<strong>Name:</strong> ${note.Name2}<br>
+                     <strong>Surname:</strong> ${note.Surname2}<br>
+                     <strong>Price:</strong> ${note.price2}<br>
+                     <strong>Residence:</strong> ${note.residence2}<br><br>`;
+                notesContainerHouse.appendChild(noteDiv);
+            });
+        } else {
+            console.error('Invalid or missing data in the response', responseDataApartments);
+        }
+    } catch (error) {
+        console.error('Error fetching apartments:', error.message);
+    }
+}
+
+async function fetchAndDisplayVilla() {
+    try {
+        const response = await fetch('/go/api/getAllVilla');
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const responseDataVilla = await response.json();
+
+        if (Array.isArray(responseDataVilla)) {
+            const notesContainerHouse = document.getElementById('notes-container-villa');
+            notesContainerHouse.innerHTML = '';
+
+            responseDataVilla.forEach(note => {
+                const noteDiv = document.createElement('div');
+                noteDiv.innerHTML = `<strong>Name:</strong> ${note.Name3}<br>
+                     <strong>Surname:</strong> ${note.Surname3}<br>
+                     <strong>Price:</strong> ${note.price3}<br>
+                     <strong>Residence:</strong> ${note.residence3}<br><br>`;
+                notesContainerHouse.appendChild(noteDiv);
+            });
+        } else {
+            console.error('Invalid or missing data in the response', responseDataVilla);
+        }
+    } catch (error) {
+        console.error('Error fetching apartments:', error.message);
+    }
+}
+
+
+
+async function deleteNote(noteId) {
+    try {
+        const response = await fetch(`/g/api/deleteNote/${noteId}`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+
+        // Assuming the server returns a success message or updated list of notes
+        console.log('Note deleted successfully:', responseData);
+
+        // You may want to update the UI or re-fetch the note list after deletion
+        fetchAndDisplayNotes();
+    } catch (error) {
+        console.error('Error deleting note:', error.message);
+    }
+}
+
+// Replace 'noteIdToBeDeleted' with the actual note ID you want to delete
+document.getElementById('deleteNoteButton').addEventListener('click', function () {
+    const noteIdToBeDeleted = 'noteIdToBeDeleted'; // Replace with the actual note ID
+    deleteNote(noteIdToBeDeleted);
+});
+async function deleteVilla(noteIds) {
+    try {
+        const response = await fetch(`/villa/api/deleteVilla/${noteIds}`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const responseDataVilla = await response.json();
+
+        // Assuming the server returns a success message or updated list of notes
+        console.log('Note deleted successfully:', responseDataVilla);
+
+        // You may want to update the UI or re-fetch the note list after deletion
+        fetchAndDisplayVilla();
+    } catch (error) {
+        console.error('Error deleting note:', error.message);
+    }
+}
+
+// Replace 'noteIdToBeDeleted' with the actual note ID you want to delete
+document.getElementById('deleteVillaButton').addEventListener('click', function () {
+    const noteIdToBeDeletedVilla = 'noteIdToBeDeletedVilla'; // Replace with the actual note ID
+    deleteVilla(noteIdToBeDeletedVilla);
+});
+
+
+async function deleteApartments(noteIda) {
+    try {
+        const response = await fetch(`/apart/api/deleteApart/${noteIda}`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const responseDataApartments = await response.json();
+
+        // Assuming the server returns a success message or updated list of notes
+        console.log('Note deleted successfully:', responseDataApartments);
+
+        // You may want to update the UI or re-fetch the note list after deletion
+        fetchAndDisplayApartments();
+    } catch (error) {
+        console.error('Error deleting note:', error.message);
+    }
+}
+
+// Replace 'noteIdToBeDeleted' with the actual note ID you want to delete
+document.getElementById('deleteApartmentsButton').addEventListener('click', function () {
+    const noteIdToBeDeletedApartments = 'noteIdToBeDeletedApartments'; // Replace with the actual note ID
+    deleteApartments(noteIdToBeDeletedApartments);
+});
+
+    </script>
+
+</body>
+</html>
+
+

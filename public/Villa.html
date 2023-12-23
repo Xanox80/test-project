@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Head content... -->
+    <style>
+        /* Shared styles for both pages */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #fc00ff, #00dbde);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Specific style for the form with the class "apartmentForm" */
+        form.apartmentForm {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            animation: fadeInUp 1s ease;
+            /* Add any specific styles for the Apartment form here */
+            border: 2px solid #3498db;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input, textarea, number {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background: linear-gradient(45deg, #4caf50, #45a049);
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #45a049, #4caf50);
+        }
+    </style>
+</head>
+<body>
+    <!-- Form with the class "apartmentForm" -->
+    <form id="noteForm" class="apartmentForm">
+        <label for="Name3">Ім'я:</label>
+        <input type="text" id="Name3" required>
+
+        <label for="Surname3">Прізвище:</label>
+        <textarea id="Surname3" required></textarea>
+
+        <label for="price3">Ціна:</label>
+        <input type="number" id="price3" required>
+
+        <label for="residence3">Місце знаходження та кількість кімнат</label>
+        <input type="text" id="residence3" required>
+
+        <button type="submit">Create Apartment</button>
+    </form>
+    <div id="notes-container"></div>
+    <!-- Script for form submission... -->
+    <script>
+        document.getElementById('noteForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const Name3 = document.getElementById('Name3').value;
+           
+            const Surname3 = document.getElementById('Surname3').value;
+        
+            const price3 = document.getElementById('price3').value;
+            
+            const residence3 = document.getElementById('residence3').value;
+            
+
+            if (Name3.trim() === '' || Surname3.trim() === '' || price3.trim() === '' || residence3.trim() === '') {
+                console.error('Error: All fields are required');
+                return;
+            }
+
+            try {
+                const response = await fetch('/villa/api/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ Name3, Surname3, price3, residence3 })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const responseData = await response.json();
+                console.log('Server response:', responseData);
+            } catch (error) {
+                console.error('Error:', error.message);
+            }
+
+            document.getElementById('Name3').value = '';
+            document.getElementById('Surname3').value = '';
+            document.getElementById('price3').value = '';
+            document.getElementById('residence3').value = '';
+        });
+    </script>
+</body>
+</html>
