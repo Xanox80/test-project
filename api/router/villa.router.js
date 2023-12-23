@@ -2,6 +2,7 @@ const express = require('express');
 const NOts3 = require('../../api/service/villa.service');
 const NotesRouter3 = express.Router();
 
+// create
 NotesRouter3.route('/api/create').post(async (req, res) => {
     const { Name3, Surname3,price3,residence3 } = req.body; // Extract title and content from request body
     // console.log(Name2);
@@ -12,11 +13,14 @@ NotesRouter3.route('/api/create').post(async (req, res) => {
     const result = await NOts3.create(Name3, Surname3,price3,residence3);
     res.send(result);
 });
+
+//get
 NotesRouter3.route('/api/getAllVilla').get(async (req, res) => { // Corrected route
     const result = await NOts3.getAllVilla();
     res.send(result);
 });
 
+//delete
 NotesRouter3.delete('/api/deleteVilla/:noteIds', async (req, res) => {
     try {
         const result = await NOts3.deleteVilla();  // Fix the function call

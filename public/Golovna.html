@@ -144,14 +144,37 @@
         <a href="pogoda.html">
             <button type="button">Погода</button>
         </a>
+        <button onclick="updateNoteModal('noteId2')">Update</button>
     </div>
+    <!-- Add more divs as needed -->
+  </ul>
+  
+  <!-- HTML for the edit form -->
+  <div id="editModal" style="display: none;">
+    <h2>Edit Note</h2>
+    <form onsubmit="submitEditForm(); return false;">
+      <label for="editName">Name:</label>
+      <input type="text" id="editName" required><br>
+  
+      <label for="editSurname">Surname:</label>
+      <input type="text" id="editSurname" required><br>
+  
+      <label for="editPrice">Price:</label>
+      <input type="number" id="editPrice" required><br>
+  
+      <label for="editResidence">Residence:</label>
+      <input type="text" id="editResidence" required><br>
+  
+      <input type="submit" value="Save">
+    </form>
+  </div>
 
     <footer>
         &copy; 2023 Ваша компанія. Усі права захищені.
     </footer>
 
     <script>
-        //////////////////////////////////////////////////
+      //    отримання об'єктів -->
         document.getElementById('getDataButton').addEventListener('click', fetchAndDisplayNotes);
 document.getElementById('getDataButtonHouse').addEventListener('click', fetchAndDisplayApartments);
 document.getElementById('getDataButtonVilla').addEventListener('click', fetchAndDisplayVilla);
@@ -248,7 +271,7 @@ async function fetchAndDisplayVilla() {
     }
 }
 
-
+//    <--Видалення об'єктів-->
 
 async function deleteNote(noteId) {
     try {
@@ -334,9 +357,75 @@ document.getElementById('deleteApartmentsButton').addEventListener('click', func
     deleteApartments(noteIdToBeDeletedApartments);
 });
 
+
+
+// PATCH
+async function updateNote(noteId, updatedData) {
+  try {
+    const response = await fetch(`/g/api/updateNote/${noteId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+
+    // Assuming the server returns a success message or updated list of notes
+    console.log('Note updated successfully:', responseData);
+
+    // Update the local responseData array with the edited data
+    const updatedResponseData = responseData.map((note) => 
+      note.id === noteId ? { ...note, ...updatedData } : note
+    );
+    renderNotes(updatedResponseData);
+
+    // Hide the edit form
+    document.getElementById('editModal').style.display = 'none';
+  } catch (error) {
+    console.error('Error updating note:', error.message);
+  }
+}
+
+function submitEditForm() {
+  // Get the edited values from the form
+  const editedName = document.getElementById('editName').value;
+  const editedSurname = document.getElementById('editSurname').value;
+  const editedPrice = document.getElementById('editPrice').value;
+  const editedResidence = document.getElementById('editResidence').value;
+
+  // Update the note with the edited values
+  const updatedData = { Name: editedName, Surname: editedSurname, price: editedPrice, residence: editedResidence };
+  updateNote(editingNoteId, updatedData);
+}
+
+function renderNotes(data) {
+  const notesContainer = document.getElementById('notes-container');
+  notesContainer.innerHTML = '';
+
+  (data || responseData).forEach(note => {
+    const noteDiv = document.createElement('div');
+    noteDiv.innerHTML = `<strong>Name:</strong> ${note.Name}<br>
+                         <strong>Surname:</strong> ${note.Surname}<br>
+                         <strong>Price:</strong> ${note.price}<br>
+                         <strong>Residence:</strong> ${note.residence}<br><br>
+                         <button onclick="editNoteModal('${note.id}')">Edit</button>
+                         <button onclick="deleteNote('${note.id}')">Delete</button>`;
+    notesContainer.appendChild(noteDiv);
+  });
+}
+
     </script>
 
 </body>
 </html>
 
 
+//////////////////////
+
+////////
