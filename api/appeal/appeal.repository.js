@@ -1,6 +1,6 @@
-const Appeal = require('../../api/notes/appeal.model')
+const Appeal = require('../../api/models/appeal.model')
 
-const AppleaRepository = {
+const AppealRepository = {
     createA: async (appeal, number ) => {
       try {
        
@@ -20,4 +20,4 @@ const AppleaRepository = {
     },
   };
   
-  module.exports = AppleaRepository;
+  module.exports = AppealRepository;

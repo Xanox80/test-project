@@ -1,5 +1,5 @@
-const AppleaRouter = require('../../api/service/applea.service');
-const AppleaService = {
+const AppealRepository = require("./appeal.repository");
+const AppealService = {
     createn: async (applea, number) => {
         try {
             return await NotesRepository2.create(applea, number);
@@ -10,4 +10,4 @@ const AppleaService = {
     }
 };
 
-module.exports = AppleaService;
+module.exports = AppealService;

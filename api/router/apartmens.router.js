@@ -1,5 +1,5 @@
 const express = require('express');
-const NOts2 = require('../../api/service/apartments.service');
+const NOts2 = require('../../api/apartments/apartments.service');
 const NotesRouter2 = express.Router();
 
 NotesRouter2.route('/api/cra').post(async (req, res) => {

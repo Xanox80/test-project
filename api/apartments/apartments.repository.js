@@ -1,18 +1,18 @@
-const Note3 = require('../../api/notes/villa.model');
+const Note2 = require('../../api/models/aparments.model');
 
-const NotesRepository3 = {
-    create: async (Name3, Surname3,price3,residence3 ) => {
+const NotesRepository2 = {
+    create: async (Name2, Surname2,price2,residence2 ) => {
       try {
        
-        const newNote3 = new Note3({
-          Name3,
-          Surname3,
-          price3,
-          residence3,
+        const newNote2 = new Note2({
+          Name2,
+          Surname2,
+          price2,
+          residence2,
           
         });
 
-        await newNote3.save();
+        await newNote2.save();
   
         return { success: true, message: 'Note created successfully!' };
       } catch (error) {
@@ -20,11 +20,11 @@ const NotesRepository3 = {
         return { success: false, message: 'Internal server error' };
       }
     },
-    getAllVilla: async () => {
+    getAllApartments: async () => {
 
       try{
   
-       return await Note3.find();
+       return await Note2.find();
         
   
       }catch( error){
@@ -33,9 +33,9 @@ const NotesRepository3 = {
       }
     },
 
-    deleteVilla: async () => {
+    deleteApartments: async () => {
       try {
-          return await Note3.deleteMany({}); // Use deleteMany to delete all documents
+          return await Note2.deleteMany({}); // Use deleteMany to delete all documents
       } catch (error) {
           console.log('Error deleting notes:', error.message);
           throw error;
@@ -43,4 +43,4 @@ const NotesRepository3 = {
   }
   };
   
-  module.exports = NotesRepository3;
+  module.exports = NotesRepository2;

@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const User = require('./api/models/user.model');
-const Note2 = require('./api/notes/aparments.model');
-const Note3 = require('./api/notes/villa.model');
-const Appeal = require('./api/notes/appeal.model');
+const Note2 = require('./api/models/aparments.model');
+const Note3 = require('./api/models/villa.model');
+const Appeal = require('./api/models/appeal.model');
 
 const connectDB = async () => {
   try {

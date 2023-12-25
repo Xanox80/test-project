@@ -1,10 +1,8 @@
-const Note = require('../../api/notes/notes.model');
-
+const Note = require('../../api/models/notes.model');
 
 const NotesRepository = {
     createNote: async (Name, Surname,price,residence ) => {
       try {
-       
         const newNote = new Note({
           Name,
           Surname,
@@ -42,9 +40,30 @@ const NotesRepository = {
             console.log('Error deleting notes:', error.message);
             throw error;
         }
-    }
+    },
 
-  };
+   
+    updateNote: async (id, updatedData) => {
+      try {
+        console.log(`Updating note with ID: ${id}`);
+        updatedData.price = Number(updatedData.price);
+        const updatedNote = await Note.findByIdAndUpdate(id, updatedData, { new: true });
+    
+        if (!updatedNote) {
+          throw new Error('Note not found');
+        }
+    
+        console.log('Note updated successfully:', updatedNote);
+        return updatedNote;
+      } catch (error) {
+        console.error('Error updating note:', error.message);
+        throw error;
+      }
+    },
+    };
+  
+
+
 
   
   module.exports = NotesRepository;

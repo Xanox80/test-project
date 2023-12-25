@@ -144,72 +144,137 @@
         <a href="pogoda.html">
             <button type="button">Погода</button>
         </a>
-        <button onclick="updateNoteModal('noteId2')">Update</button>
+        
     </div>
     <!-- Add more divs as needed -->
   </ul>
-  
+  <button onclick="updateNoteModal('${note.id}')">Edit</button>
   <!-- HTML for the edit form -->
   <div id="editModal" style="display: none;">
     <h2>Edit Note</h2>
     <form onsubmit="submitEditForm(); return false;">
-      <label for="editName">Name:</label>
-      <input type="text" id="editName" required><br>
-  
-      <label for="editSurname">Surname:</label>
-      <input type="text" id="editSurname" required><br>
-  
-      <label for="editPrice">Price:</label>
-      <input type="number" id="editPrice" required><br>
-  
-      <label for="editResidence">Residence:</label>
-      <input type="text" id="editResidence" required><br>
-  
-      <input type="submit" value="Save">
+        <label for="editName">Name:</label>
+        <input type="text" id="editName" required><br>
+
+        <label for="editSurname">Surname:</label>
+        <input type="text" id="editSurname" required><br>
+
+        <label for="editPrice">Price:</label>
+        <input type="number" id="editPrice" required><br>
+
+        <label for="editResidence">Residence:</label>
+        <input type="text" id="editResidence" required><br>
+
+        <input type="submit" value="Save">
     </form>
-  </div>
+</div>
+
 
     <footer>
         &copy; 2023 Ваша компанія. Усі права захищені.
     </footer>
 
     <script>
+
       //    отримання об'єктів -->
         document.getElementById('getDataButton').addEventListener('click', fetchAndDisplayNotes);
-document.getElementById('getDataButtonHouse').addEventListener('click', fetchAndDisplayApartments);
-document.getElementById('getDataButtonVilla').addEventListener('click', fetchAndDisplayVilla);
+        document.getElementById('getDataButtonHouse').addEventListener('click', fetchAndDisplayApartments);
+        document.getElementById('getDataButtonVilla').addEventListener('click', fetchAndDisplayVilla);
+
+    //  Скомуниздив функцію зі свого коду (Функція яка шле реквести до сервера і повертає результат)
+async function sendRequest(method, url, data) {    
+    const response = await fetch(url, {
+        method,
+        headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+    });
+
+    // Return response text for non-JSON responses
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+        return response.json();
+    } else {
+        return response.text();
+    }
+}
 
 // Remove the window.addEventListener('load', ...) for each function
 
 async function fetchAndDisplayNotes() {
-    try {
-        const response = await fetch('/golovna/api/getAllNotes');
+  try {
+    const responseData = await sendRequest("GET", "/golovna/api/getAllNotes");
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+    if (Array.isArray(responseData)) {
+      const notesContainer = document.getElementById('notes-container');
+      notesContainer.innerHTML = '';
 
-        const responseData = await response.json();
+      for (const note of responseData) {
+        const noteDiv = document.createElement('div');
+        noteDiv.innerHTML = `<strong id="name">Name:</strong> ${note.Name}<br>
+               <strong id="surname">Surname:</strong> ${note.Surname}<br>
+               <strong id="price">Price:</strong> ${note.price}<br>
+               <strong id="residence">Residence:</strong> ${note.residence}<br><br>
+               <div><button class="edit-btn">Edit</button><button class="delete-btn">Delete</button></div>
+               <div><button class="confirm-btn" style="display:none;">Confirm</button></div>`;
 
-        if (Array.isArray(responseData)) {
-            const notesContainer = document.getElementById('notes-container');
-            notesContainer.innerHTML = '';
+        notesContainer.appendChild(noteDiv);
 
-            responseData.forEach(note => {
-                const noteDiv = document.createElement('div');
-                noteDiv.innerHTML = `<strong>Name:</strong> ${note.Name}<br>
-                     <strong>Surname:</strong> ${note.Surname}<br>
-                     <strong>Price:</strong> ${note.price}<br>
-                     <strong>Residence:</strong> ${note.residence}<br><br>`;
-                notesContainer.appendChild(noteDiv);
+        // Delete button functionality
+        const deleteBtn = noteDiv.querySelector(".delete-btn");
+        deleteBtn.addEventListener('click', async function () {
+          try {
+            await sendRequest('DELETE', '/g/api/deleteNote/' + note._id);
+            noteDiv.remove();
+          } catch (error) {
+            console.error('Error deleting note:', error.message);
+          }
+        });
+
+        // Edit button functionality
+        const editBtn = noteDiv.querySelector(".edit-btn");
+        const confirmBtn = noteDiv.querySelector(".confirm-btn");
+        const Name = noteDiv.querySelector("#name");
+        const Surname = noteDiv.querySelector("#surname");
+        const price = noteDiv.querySelector("#price");
+        const residence = noteDiv.querySelector("#residence");
+
+        editBtn.addEventListener('click', function () {
+          Name.contentEditable = true;
+          Surname.contentEditable = true;
+          price.contentEditable = true;
+          residence.contentEditable = true;
+          confirmBtn.style.display = "inline";
+        });
+
+        confirmBtn.addEventListener('click', async function () {
+          try {
+            Name.contentEditable = false;
+            Surname.contentEditable = false;
+            price.contentEditable = false;
+            residence.contentEditable = false;
+            confirmBtn.style.display = "none";
+
+            await sendRequest('PATCH', '/up/api/notes/' + note._id, {
+              Name: Name.textContent,
+              Surname: Surname.textContent,
+              price: price.textContent,
+              residence: residence.textContent
             });
-        } else {
-            console.error('Invalid or missing data in the response', responseData);
-        }
-    } catch (error) {
-        console.error('Error fetching notes:', error.message);
+          } catch (error) {
+            console.error('Error updating note:', error.message);
+          }
+        });
+      }
+    } else {
+      console.error('Invalid or missing data in the response', responseData);
     }
+  } catch (error) {
+    console.error('Error fetching notes:', error.message);
+  }
 }
+
 
 async function fetchAndDisplayApartments() {
     try {
@@ -360,36 +425,35 @@ document.getElementById('deleteApartmentsButton').addEventListener('click', func
 
 
 // PATCH
+function updateNoteModal(noteId) {
+    console.log(`Updating note modal for ${noteId}`);
+    editingNoteId = noteId;
+    document.getElementById('editModal').style.display = 'block';
+}
 async function updateNote(noteId, updatedData) {
-  try {
-    const response = await fetch(`/g/api/updateNote/${noteId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedData),
-    });
+    try {
+        const response = await fetch(`/up/api/notes/` + noteId, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedData),
+        });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+
+        // Assuming the server returns the updated note or a success message
+        console.log('Note updated successfully:', responseData);
+
+        // Fetch and display notes after update
+        fetchAndDisplayNotes();
+    } catch (error) {
+        console.error('Error updating note:', error.message);
     }
-
-    const responseData = await response.json();
-
-    // Assuming the server returns a success message or updated list of notes
-    console.log('Note updated successfully:', responseData);
-
-    // Update the local responseData array with the edited data
-    const updatedResponseData = responseData.map((note) => 
-      note.id === noteId ? { ...note, ...updatedData } : note
-    );
-    renderNotes(updatedResponseData);
-
-    // Hide the edit form
-    document.getElementById('editModal').style.display = 'none';
-  } catch (error) {
-    console.error('Error updating note:', error.message);
-  }
 }
 
 function submitEditForm() {
@@ -404,28 +468,24 @@ function submitEditForm() {
   updateNote(editingNoteId, updatedData);
 }
 
-function renderNotes(data) {
-  const notesContainer = document.getElementById('notes-container');
-  notesContainer.innerHTML = '';
+function renderNotes(data, containerId) {
+            const notesContainer = document.getElementById(containerId);
+            notesContainer.innerHTML = '';
 
-  (data || responseData).forEach(note => {
-    const noteDiv = document.createElement('div');
-    noteDiv.innerHTML = `<strong>Name:</strong> ${note.Name}<br>
-                         <strong>Surname:</strong> ${note.Surname}<br>
-                         <strong>Price:</strong> ${note.price}<br>
-                         <strong>Residence:</strong> ${note.residence}<br><br>
-                         <button onclick="editNoteModal('${note.id}')">Edit</button>
-                         <button onclick="deleteNote('${note.id}')">Delete</button>`;
-    notesContainer.appendChild(noteDiv);
-  });
-}
+            (data || []).forEach(note => {
+                const noteDiv = document.createElement('div');
+                noteDiv.innerHTML = `<strong>Name:</strong> ${note.Name}<br>
+                                     <strong>Surname:</strong> ${note.Surname}<br>
+                                     <strong>Price:</strong> ${note.price}<br>
+                                     <strong>Residence:</strong> ${note.residence}<br><br>
+                                     <button onclick="updateNoteModal('${note.id}')">Update</button>
+                                     <button onclick="deleteNote('${note.id}', '${containerId}')">Delete</button>`;
+                notesContainer.appendChild(noteDiv);
+            });
+        }
+
 
     </script>
 
 </body>
 </html>
-
-
-//////////////////////
-
-////////

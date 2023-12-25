@@ -1,4 +1,4 @@
-const NotesRepository2 = require('../../api/service/apartments.service');
+const NotesRepository2 = require('../../api/apartments/apartments.repository');
 const NotesService2 = {
     createn: async (Name2, Surname2,price2,residence2) => {
         try {

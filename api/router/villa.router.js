@@ -1,5 +1,5 @@
 const express = require('express');
-const NOts3 = require('../../api/service/villa.service');
+const NOts3 = require('../../api/villa/villa.service');
 const NotesRouter3 = express.Router();
 
 // create

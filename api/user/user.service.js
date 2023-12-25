@@ -1,4 +1,4 @@
-const UserRepository = require( '../service/user.service');
+const UserRepository = require( '../user/user.repository');
 const UserService = {
   registerUser: async (username, password) => {
     try {

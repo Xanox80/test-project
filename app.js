@@ -29,6 +29,7 @@ app.use('/go', require('./api/router/villa.router'));
 app.use('/g', require('./api/router/notes.router'));
 app.use('/villa', require('./api/router/villa.router'));
 app.use('/apart', require('./api/router/apartmens.router'));
+app.use('/up', require('./api/router/notes.router'));
 app.use(express.json());
 app.use(cors()); // Enable CORS
 
