@@ -14,6 +14,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+
+
+
 // Ensure the correct file path for script.js
 app.use('/', require('./users'));
 app.use('/catalog', require('./users/catalog'));
@@ -30,6 +35,15 @@ app.use('/g', require('./api/router/notes.router'));
 app.use('/villa', require('./api/router/villa.router'));
 app.use('/apart', require('./api/router/apartmens.router'));
 app.use('/up', require('./api/router/notes.router'));
+app.use('/upi', require('./api/router/apartmens.router'));
+app.use('/upvilla', require('./api/router/villa.router'));
+
+
+
+
+
+
+
 app.use(express.json());
 app.use(cors()); // Enable CORS
 

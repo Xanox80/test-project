@@ -1,6 +1,6 @@
 const Note3 = require('../../api/models/villa.model');
 
-const NotesRepository3 = {
+const VillaRepository = {
     create: async (Name3, Surname3,price3,residence3 ) => {
       try {
        
@@ -40,7 +40,25 @@ const NotesRepository3 = {
           console.log('Error deleting notes:', error.message);
           throw error;
       }
-  }
+  },
+
+  updateVilla: async (id, updatedData) => {
+    try {
+      console.log(`Updating note with ID: ${id}`);
+      updatedData.price = Number(updatedData.price);
+      const updatedVilla = await Note3.findByIdAndUpdate(id, updatedData, { new: true });
+  
+      if (!updatedVilla ) {
+        throw new Error('Note not found');
+      }
+  
+      console.log('Note updated successfully:', updatedVilla );
+      return updatedVilla ;
+    } catch (error) {
+      console.error('Error updating note:', error.message);
+      throw error;
+    }
+  },
   };
   
-  module.exports = NotesRepository3;
+  module.exports = VillaRepository;

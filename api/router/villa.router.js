@@ -1,27 +1,24 @@
 const express = require('express');
 const NOts3 = require('../../api/villa/villa.service');
-const NotesRouter3 = express.Router();
+const VillaRouter = express.Router();
 
 // create
-NotesRouter3.route('/api/create').post(async (req, res) => {
+VillaRouter.route('/api/create').post(async (req, res) => {
     const { Name3, Surname3,price3,residence3 } = req.body; // Extract title and content from request body
-    // console.log(Name2);
-    // console.log(Surname2);
-    // console.log(price2);
-    // console.log(residence2);
+    
 
-    const result = await NOts3.create(Name3, Surname3,price3,residence3);
+    const result = await NOts3.createn(Name3, Surname3,price3,residence3);
     res.send(result);
 });
 
 //get
-NotesRouter3.route('/api/getAllVilla').get(async (req, res) => { // Corrected route
+VillaRouter.route('/api/getAllVilla').get(async (req, res) => { // Corrected route
     const result = await NOts3.getAllVilla();
     res.send(result);
 });
 
 //delete
-NotesRouter3.delete('/api/deleteVilla/:noteIds', async (req, res) => {
+VillaRouter.delete('/api/deleteVilla/:noteIds', async (req, res) => {
     try {
         const result = await NOts3.deleteVilla();  // Fix the function call
         res.json(result);
@@ -30,4 +27,23 @@ NotesRouter3.delete('/api/deleteVilla/:noteIds', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-module.exports = NotesRouter3;
+
+VillaRouter.patch('/api/updateVilla/:id', async (req, res) => {
+    const noteId = req.params.id;  // Corrected from req.params.noteId to req.params.id
+    const updatedData = req.body;
+  
+    try {
+      const updatedNote = await NOts3.updateVilla(noteId, updatedData);
+  
+      // Assuming you want to send the updated note back to the client
+      res.json(updatedNote);
+    } catch (error) {
+      if (error.message === 'Note not found') {
+        return res.status(404).json({ error: 'Note not found' });
+      }
+  
+      console.error('Error updating note:', error.message);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+module.exports = VillaRouter;

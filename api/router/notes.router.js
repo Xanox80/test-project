@@ -7,7 +7,7 @@ const NotesRouter = express.Router();
 //create
 NotesRouter.route('/api/cr').post(async (req, res) => {
     const { Name, Surname, price, residence } = req.body;
-    const result = await NOts.createNote(Name, Surname, price, residence);
+    const result = await NOts.createnot(Name, Surname, price, residence);
     res.send(result);
 });
 

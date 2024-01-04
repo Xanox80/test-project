@@ -210,12 +210,12 @@ async function fetchAndDisplayNotes() {
       const notesContainer = document.getElementById('notes-container');
       notesContainer.innerHTML = '';
 
-      for (const note of responseData) {
+      for (const data of responseData) {
         const noteDiv = document.createElement('div');
-        noteDiv.innerHTML = `<strong id="name">Name:</strong> ${note.Name}<br>
-               <strong id="surname">Surname:</strong> ${note.Surname}<br>
-               <strong id="price">Price:</strong> ${note.price}<br>
-               <strong id="residence">Residence:</strong> ${note.residence}<br><br>
+        noteDiv.innerHTML = `<strong>Name:</strong><p id="name">${data.Name}</p><br>
+               <strong>Surname:</strong><p id="surname">${data.Surname}</p><br>
+               <strong>Price:</strong><p id="price">${data.price}</p><br>
+               <strong>Residence:</strong><p id="residence">${data.residence}</p><br><br>
                <div><button class="edit-btn">Edit</button><button class="delete-btn">Delete</button></div>
                <div><button class="confirm-btn" style="display:none;">Confirm</button></div>`;
 
@@ -225,7 +225,7 @@ async function fetchAndDisplayNotes() {
         const deleteBtn = noteDiv.querySelector(".delete-btn");
         deleteBtn.addEventListener('click', async function () {
           try {
-            await sendRequest('DELETE', '/g/api/deleteNote/' + note._id);
+            await sendRequest('DELETE', '/g/api/deleteNote/' + data._id);
             noteDiv.remove();
           } catch (error) {
             console.error('Error deleting note:', error.message);
@@ -256,7 +256,7 @@ async function fetchAndDisplayNotes() {
             residence.contentEditable = false;
             confirmBtn.style.display = "none";
 
-            await sendRequest('PATCH', '/up/api/notes/' + note._id, {
+            await sendRequest('PATCH', '/up/api/notes/' + data._id, {
               Name: Name.textContent,
               Surname: Surname.textContent,
               price: price.textContent,
@@ -275,217 +275,161 @@ async function fetchAndDisplayNotes() {
   }
 }
 
-
 async function fetchAndDisplayApartments() {
-    try {
-        const response = await fetch('/gol/api/getAllApartments');
+  try {
+    const responseData1 = await sendRequest("GET", "/gol/api/getAllApartments");
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+    if (Array.isArray(responseData1)) {
+      const notesContainerHouse = document.getElementById('notes-container-house');
+      notesContainerHouse.innerHTML = '';
 
-        const responseDataApartments = await response.json();
+      for (const data of responseData1) {
+        const noteDiv1 = document.createElement('div');
+        noteDiv1.innerHTML = `<strong>Name:</strong><p id="name2">${data.Name2}</p><br>
+               <strong>Surname:</strong><p id="surname2">${data.Surname2}</p><br>
+               <strong>Price:</strong><p id="price2">${data.price2}</p><br>
+               <strong>Residence:</strong><p id="residence2">${data.residence2}</p><br><br>
+               <div><button class="edit-btn2">Edit</button><button class="delete-btn2">Delete</button></div>
+               <div><button class="confirm-btn2" style="display:none;">Confirm</button></div>`;
 
-        if (Array.isArray(responseDataApartments)) {
-            const notesContainerHouse = document.getElementById('notes-container-house');
-            notesContainerHouse.innerHTML = '';
+        notesContainerHouse.appendChild(noteDiv1);
 
-            responseDataApartments.forEach(note => {
-                const noteDiv = document.createElement('div');
-                noteDiv.innerHTML = `<strong>Name:</strong> ${note.Name2}<br>
-                     <strong>Surname:</strong> ${note.Surname2}<br>
-                     <strong>Price:</strong> ${note.price2}<br>
-                     <strong>Residence:</strong> ${note.residence2}<br><br>`;
-                notesContainerHouse.appendChild(noteDiv);
+        // Delete button functionality
+        const deleteBtn2 = noteDiv1.querySelector(".delete-btn2");
+        deleteBtn2.addEventListener('click', async function () {
+          try {
+            await sendRequest('DELETE', '/apart/api/deleteApartment/' + data._id);
+            noteDiv1.remove();
+          } catch (error) {
+            console.error('Error deleting apartment:', error.message);
+          }
+        });
+
+        // Edit button functionality
+        const editBtn2 = noteDiv1.querySelector(".edit-btn2");
+        const confirmBtn2 = noteDiv1.querySelector(".confirm-btn2");
+        const Name2 = noteDiv1.querySelector("#name2");
+        const Surname2 = noteDiv1.querySelector("#surname2");
+        const price2 = noteDiv1.querySelector("#price2");
+        const residence2 = noteDiv1.querySelector("#residence2");
+
+        editBtn2.addEventListener('click', function () {
+          Name2.contentEditable = true;
+          Surname2.contentEditable = true;
+          price2.contentEditable = true;
+          residence2.contentEditable = true;
+          confirmBtn2.style.display = "inline";
+        });
+
+        confirmBtn2.addEventListener('click', async function () {
+          try {
+            Name2.contentEditable = false;
+            Surname2.contentEditable = false;
+            price2.contentEditable = false;
+            residence2.contentEditable = false;
+            confirmBtn2.style.display = "none";
+
+            await sendRequest('PATCH', '/upi/api/updateApartment/' + data._id, {
+              Name2: Name2.textContent,
+              Surname2: Surname2.textContent,
+              price2: price2.textContent,
+              residence2: residence2.textContent
             });
-        } else {
-            console.error('Invalid or missing data in the response', responseDataApartments);
-        }
-    } catch (error) {
-        console.error('Error fetching apartments:', error.message);
+          } catch (error) {
+            console.error('Error updating apartment:', error.message);
+          }
+        });
+      }
+    } else {
+      console.error('Invalid or missing data in the response', responseData1);
     }
+  } catch (error) {
+    console.error('Error fetching apartments:', error.message);
+  }
 }
 
-async function fetchAndDisplayVilla() {
-    try {
-        const response = await fetch('/go/api/getAllVilla');
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
 
-        const responseDataVilla = await response.json();
 
-        if (Array.isArray(responseDataVilla)) {
-            const notesContainerHouse = document.getElementById('notes-container-villa');
-            notesContainerHouse.innerHTML = '';
 
-            responseDataVilla.forEach(note => {
-                const noteDiv = document.createElement('div');
-                noteDiv.innerHTML = `<strong>Name:</strong> ${note.Name3}<br>
-                     <strong>Surname:</strong> ${note.Surname3}<br>
-                     <strong>Price:</strong> ${note.price3}<br>
-                     <strong>Residence:</strong> ${note.residence3}<br><br>`;
-                notesContainerHouse.appendChild(noteDiv);
+
+
+async function  fetchAndDisplayVilla() {
+  try {
+    const responseData2 = await sendRequest("GET", "/go/api/getAllVilla");
+
+    if (Array.isArray(responseData2)) {
+      const notesContainerVilla = document.getElementById('notes-container-villa');
+      notesContainerVilla.innerHTML = '';
+
+      for (const data of responseData2) {
+        const noteDiv2 = document.createElement('div');
+        noteDiv2.innerHTML = `<strong>Name:</strong><p id="name3">${data.Name3}</p><br>
+               <strong>Surname:</strong><p id="surname3">${data.Surname3}</p><br>
+               <strong>Price:</strong><p id="price3">${data.price3}</p><br>
+               <strong>Residence:</strong><p id="residence3">${data.residence3}</p><br><br>
+               <div><button class="edit-btn3">Edit</button><button class="delete-btn3">Delete</button></div>
+               <div><button class="confirm-btn3" style="display:none;">Confirm</button></div>`;
+
+        notesContainerVilla.appendChild(noteDiv2);
+
+        // Delete button functionality
+        const deleteBtn3 = noteDiv2.querySelector(".delete-btn3");
+        deleteBtn3.addEventListener('click', async function () {
+          try {
+            await sendRequest('DELETE', '/villa/api/deleteVilla/' + data._id);
+            noteDiv1.remove();
+          } catch (error) {
+            console.error('Error deleting apartment:', error.message);
+          }
+        });
+
+        // Edit button functionality
+        const editBtn3 = noteDiv2.querySelector(".edit-btn3");
+        const confirmBtn3 = noteDiv2.querySelector(".confirm-btn3");
+        const Name3 = noteDiv2.querySelector("#name3");
+        const Surname3 = noteDiv2.querySelector("#surname3");
+        const price3 = noteDiv2.querySelector("#price3");
+        const residence3 = noteDiv2.querySelector("#residence3");
+
+        editBtn3.addEventListener('click', function () {
+          Name3.contentEditable = true;
+          Surname3.contentEditable = true;
+          price3.contentEditable = true;
+          residence3.contentEditable = true;
+          confirmBtn3.style.display = "inline";
+        });
+
+        confirmBtn3.addEventListener('click', async function () {
+          try {
+            Name3.contentEditable = false;
+            Surname3.contentEditable = false;
+            price3.contentEditable = false;
+            residence3.contentEditable = false;
+            confirmBtn3.style.display = "none";
+
+            await sendRequest('PATCH', '/upvilla/api/updateVilla/' + data._id, {
+              Name3: Name3.textContent,
+              Surname3: Surname3.textContent,
+              price3: price3.textContent,
+              residence3: residence3.textContent
             });
-        } else {
-            console.error('Invalid or missing data in the response', responseDataVilla);
-        }
-    } catch (error) {
-        console.error('Error fetching apartments:', error.message);
-    }
-}
-
-//    <--Видалення об'єктів-->
-
-async function deleteNote(noteId) {
-    try {
-        const response = await fetch(`/g/api/deleteNote/${noteId}`, {
-            method: 'DELETE',
+          } catch (error) {
+            console.error('Error updating apartment:', error.message);
+          }
         });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const responseData = await response.json();
-
-        // Assuming the server returns a success message or updated list of notes
-        console.log('Note deleted successfully:', responseData);
-
-        // You may want to update the UI or re-fetch the note list after deletion
-        fetchAndDisplayNotes();
-    } catch (error) {
-        console.error('Error deleting note:', error.message);
+      }
+    } else {
+      console.error('Invalid or missing data in the response', responseData2);
     }
+  } catch (error) {
+    console.error('Error fetching apartments:', error.message);
+  }
 }
-
-// Replace 'noteIdToBeDeleted' with the actual note ID you want to delete
-document.getElementById('deleteNoteButton').addEventListener('click', function () {
-    const noteIdToBeDeleted = 'noteIdToBeDeleted'; // Replace with the actual note ID
-    deleteNote(noteIdToBeDeleted);
-});
-async function deleteVilla(noteIds) {
-    try {
-        const response = await fetch(`/villa/api/deleteVilla/${noteIds}`, {
-            method: 'DELETE',
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const responseDataVilla = await response.json();
-
-        // Assuming the server returns a success message or updated list of notes
-        console.log('Note deleted successfully:', responseDataVilla);
-
-        // You may want to update the UI or re-fetch the note list after deletion
-        fetchAndDisplayVilla();
-    } catch (error) {
-        console.error('Error deleting note:', error.message);
-    }
-}
-
-// Replace 'noteIdToBeDeleted' with the actual note ID you want to delete
-document.getElementById('deleteVillaButton').addEventListener('click', function () {
-    const noteIdToBeDeletedVilla = 'noteIdToBeDeletedVilla'; // Replace with the actual note ID
-    deleteVilla(noteIdToBeDeletedVilla);
-});
-
-
-async function deleteApartments(noteIda) {
-    try {
-        const response = await fetch(`/apart/api/deleteApart/${noteIda}`, {
-            method: 'DELETE',
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const responseDataApartments = await response.json();
-
-        // Assuming the server returns a success message or updated list of notes
-        console.log('Note deleted successfully:', responseDataApartments);
-
-        // You may want to update the UI or re-fetch the note list after deletion
-        fetchAndDisplayApartments();
-    } catch (error) {
-        console.error('Error deleting note:', error.message);
-    }
-}
-
-// Replace 'noteIdToBeDeleted' with the actual note ID you want to delete
-document.getElementById('deleteApartmentsButton').addEventListener('click', function () {
-    const noteIdToBeDeletedApartments = 'noteIdToBeDeletedApartments'; // Replace with the actual note ID
-    deleteApartments(noteIdToBeDeletedApartments);
-});
-
-
-
-// PATCH
-function updateNoteModal(noteId) {
-    console.log(`Updating note modal for ${noteId}`);
-    editingNoteId = noteId;
-    document.getElementById('editModal').style.display = 'block';
-}
-async function updateNote(noteId, updatedData) {
-    try {
-        const response = await fetch(`/up/api/notes/` + noteId, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(updatedData),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const responseData = await response.json();
-
-        // Assuming the server returns the updated note or a success message
-        console.log('Note updated successfully:', responseData);
-
-        // Fetch and display notes after update
-        fetchAndDisplayNotes();
-    } catch (error) {
-        console.error('Error updating note:', error.message);
-    }
-}
-
-function submitEditForm() {
-  // Get the edited values from the form
-  const editedName = document.getElementById('editName').value;
-  const editedSurname = document.getElementById('editSurname').value;
-  const editedPrice = document.getElementById('editPrice').value;
-  const editedResidence = document.getElementById('editResidence').value;
-
-  // Update the note with the edited values
-  const updatedData = { Name: editedName, Surname: editedSurname, price: editedPrice, residence: editedResidence };
-  updateNote(editingNoteId, updatedData);
-}
-
-function renderNotes(data, containerId) {
-            const notesContainer = document.getElementById(containerId);
-            notesContainer.innerHTML = '';
-
-            (data || []).forEach(note => {
-                const noteDiv = document.createElement('div');
-                noteDiv.innerHTML = `<strong>Name:</strong> ${note.Name}<br>
-                                     <strong>Surname:</strong> ${note.Surname}<br>
-                                     <strong>Price:</strong> ${note.price}<br>
-                                     <strong>Residence:</strong> ${note.residence}<br><br>
-                                     <button onclick="updateNoteModal('${note.id}')">Update</button>
-                                     <button onclick="deleteNote('${note.id}', '${containerId}')">Delete</button>`;
-                notesContainer.appendChild(noteDiv);
-            });
-        }
-
 
     </script>
 
 </body>
 </html>
+
+

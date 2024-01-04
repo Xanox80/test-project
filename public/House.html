@@ -61,6 +61,7 @@
             border-radius: 4px;
             cursor: pointer;
             transition: background 0.3s ease;
+            margin-right: 10px; /* Added margin to separate buttons */
         }
 
         button:hover {
@@ -84,10 +85,17 @@
         <input type="text" id="residence" required>
 
         <button type="submit">Create Note</button>
+
+        <!-- New button next to "Create Note" button -->
+        <a href="Create.html">
+            <button type="button">Create
+            </button>
+        </a>
     </form>
-    <div id="notes-container"></div>
-    <script>
     
+    <div id="notes-container"></div>
+    
+    <script>
         document.getElementById('noteForm').addEventListener('submit', async function (event) {
             event.preventDefault();
     

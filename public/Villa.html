@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Head content... -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Villa Form</title>
     <style>
-        /* Shared styles for both pages */
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(45deg, #fc00ff, #00dbde);
+            background: radial-gradient(circle at top, #0F2027 0%, #203A43 30%, #2C5364 60%, #3E3E3E 100%);
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
 
-        /* Specific style for the form with the class "apartmentForm" */
         form.apartmentForm {
             background: rgba(255, 255, 255, 0.8);
             padding: 20px;
@@ -24,7 +25,6 @@
             max-width: 400px;
             width: 100%;
             animation: fadeInUp 1s ease;
-            /* Add any specific styles for the Apartment form here */
             border: 2px solid #3498db;
         }
 
@@ -56,7 +56,7 @@
         }
 
         button {
-            background: linear-gradient(45deg, #4caf50, #45a049);
+            background: linear-gradient(45deg, #FF5F6D, #FFC371);
             color: #fff;
             padding: 10px 20px;
             border: none;
@@ -66,12 +66,25 @@
         }
 
         button:hover {
+            background: linear-gradient(45deg, #FFC371, #FF5F6D);
+        }
+
+        a {
+            text-decoration: none;
+            display: block;
+            margin-top: 10px;
+        }
+
+        a button {
             background: linear-gradient(45deg, #45a049, #4caf50);
+        }
+
+        a button:hover {
+            background: linear-gradient(45deg, #4caf50, #45a049);
         }
     </style>
 </head>
 <body>
-    <!-- Form with the class "apartmentForm" -->
     <form id="noteForm" class="apartmentForm">
         <label for="Name3">Ім'я:</label>
         <input type="text" id="Name3" required>
@@ -85,22 +98,24 @@
         <label for="residence3">Місце знаходження та кількість кімнат</label>
         <input type="text" id="residence3" required>
 
-        <button type="submit">Create Apartment</button>
+        <button type="submit">Create Villa</button>
+
+        <!-- Button to redirect to the Create page -->
+        <a href="Create.html">
+            <button type="button">Create</button>
+        </a>
     </form>
+    
     <div id="notes-container"></div>
-    <!-- Script for form submission... -->
+
     <script>
         document.getElementById('noteForm').addEventListener('submit', async function (event) {
             event.preventDefault();
 
             const Name3 = document.getElementById('Name3').value;
-           
             const Surname3 = document.getElementById('Surname3').value;
-        
             const price3 = document.getElementById('price3').value;
-            
             const residence3 = document.getElementById('residence3').value;
-            
 
             if (Name3.trim() === '' || Surname3.trim() === '' || price3.trim() === '' || residence3.trim() === '') {
                 console.error('Error: All fields are required');
