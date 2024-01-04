@@ -14,19 +14,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
-
-
-
 // Ensure the correct file path for script.js
 app.use('/', require('./users'));
 app.use('/catalog', require('./users/catalog'));
 app.use('/user', require('./api/router/user.router'));
 // app.use('/user', require('./api/models/user.model'))
-app.use('/notes', require('./api/router/notes.router'))
-app.use('/apartments', require('./api/router/apartmens.router'))
-app.use('/villa',require('./api/router/villa.router'));
+app.use('/notes', require('./api/router/notes.router'));
+app.use('/apartments', require('./api/router/apartmens.router'));
+app.use('/villa', require('./api/router/villa.router'));
 app.use('/appeal', require('./api/router/appeal.router'));
 app.use('/golovna', require('./api/router/notes.router'));
 app.use('/gol', require('./api/router/apartmens.router'));
@@ -38,18 +33,11 @@ app.use('/up', require('./api/router/notes.router'));
 app.use('/upi', require('./api/router/apartmens.router'));
 app.use('/upvilla', require('./api/router/villa.router'));
 
-
-
-
-
-
-
 app.use(express.json());
 app.use(cors()); // Enable CORS
 
 app.use('/user', userRouter);
 
-
 app.listen(port, () => {
-    console.log('server started on http://localhost:' + port + '/Login.html');
+	console.log('server started on http://localhost:' + port + '/Login.html');
 });
