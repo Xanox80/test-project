@@ -1,117 +1,109 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Real Estate</title>
+		<style>
+			body {
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+				background-color: #f0f0f0;
+				margin: 0;
+				padding: 0;
+				color: #333;
+				text-align: center;
+				background: url('https://source.unsplash.com/1920x1080/?realestate')
+					center/cover;
+				background-attachment: fixed;
+			}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real Estate</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-            color: #333;
-            text-align: center;
-            background: url('https://source.unsplash.com/1920x1080/?realestate') center/cover;
-            background-attachment: fixed;
-        }
+			header {
+				background-color: #3498db;
+				padding: 20px;
+				color: #fff;
+				border-bottom: 2px solid #2980b9;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
 
-        header {
-            background-color: #3498db;
-            padding: 20px;
-            color: #fff;
-            border-bottom: 2px solid #2980b9;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+			header h1 {
+				font-size: 36px;
+				margin: 0;
+			}
 
-        header h1 {
-            font-size: 36px;
-            margin: 0;
-        }
+			nav {
+				margin: 20px;
+			}
 
-        nav {
-            margin: 20px;
-        }
+			button {
+				padding: 15px 20px;
+				background-color: #3498db;
+				color: #fff;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+				font-size: 18px;
+				transition: background-color 0.3s ease;
+			}
 
-        button {
-            padding: 15px 20px;
-            background-color: #3498db;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: background-color 0.3s ease;
-        }
+			button:hover {
+				background-color: #2980b9;
+			}
 
-        button:hover {
-            background-color: #2980b9;
-        }
+			section {
+				margin-top: 20px;
+				padding: 30px;
+				background-color: rgba(255, 255, 255, 0.8);
+				border-radius: 10px;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			}
 
-        section {
-            margin-top: 20px;
-            padding: 30px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+			footer {
+				margin-top: 20px;
+				background-color: #3498db;
+				padding: 15px 0;
+				color: #fff;
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+			}
+		</style>
+	</head>
 
-        footer {
-            margin-top: 20px;
-            background-color: #3498db;
-            padding: 15px 0;
-            color: #fff;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
-</head>
+	<body>
+		<header>
+			<h1>Ласкаво просимо на сайт нерухомості</h1>
+			<nav>
+				<a href="Golovna.html">
+					<button type="button">Головна</button>
+				</a>
+				<a href="House.html">
+					<button type="button">House</button>
+				</a>
+				<a href="Apartment.html">
+					<button type="button">Apartments</button>
+				</a>
+				<a href="Villa.html">
+					<button type="button">Villa</button>
+				</a>
+			</nav>
+		</header>
 
-<body>
+		<section id="houseList" style="display: none">
+			<h2>House Listings</h2>
+			<!-- Додайте ваші оголошення про будинки тут -->
+			<p>Затишні будинки для вас!</p>
+		</section>
 
-    <header>
-        <h1>Ласкаво просимо на сайт нерухомості</h1>
-        <nav>
-            <a href="Golovna.html">
-                <button type="button">
-                    Головна
-                </button>
-            </a>
-            <a href="House.html">
-                <button type="button">House
-                </button>
-            </a>
-            <a href="Apartment.html">
-                <button type="button">Apartments
-                </button>
-            </a>
-            <a href="Villa.html">
-                <button type="button">Villa
-                </button>
-            </a>
-        </nav>
-    </header>
+		<section id="apartmentList" style="display: none">
+			<h2>Apartment Listings</h2>
+			<!-- Додайте ваші оголошення про квартири тут -->
+			<p>Зручні квартири для вас!</p>
+		</section>
 
-    <section id="houseList" style="display: none;">
-        <h2>House Listings</h2>
-        <!-- Додайте ваші оголошення про будинки тут -->
-        <p>Затишні будинки для вас!</p>
-    </section>
-
-    <section id="apartmentList" style="display: none;">
-        <h2>Apartment Listings</h2>
-        <!-- Додайте ваші оголошення про квартири тут -->
-        <p>Зручні квартири для вас!</p>
-    </section>
-
-    <footer>
-        <p>&copy; 2023 Сайт нерухомості. Усі права захищено.</p>
-    </footer>
-
-</body>
-
+		<footer>
+			<p>&copy; 2023 Сайт нерухомості. Усі права захищено.</p>
+		</footer>
+	</body>
 </html>
