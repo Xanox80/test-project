@@ -1,16 +1,17 @@
 const ApartRepository = require('../../api/apartments/apartments.repository');
 const ApartService = {
-	createn: async (Name2, Surname2, price2, residence2) => {
+	creatroom: async (name2, surname2, price2, residence2) => {
 		try {
-			return await ApartRepository.create(Name2, Surname2, price2, residence2);
+			return await ApartRepository.createroom(name2, surname2, price2, residence2);
 		} catch (error) {
 			console.log('Error when you create notes', error.message);
 			throw error;
 		}
 	},
+
 	getAllApartments: async () => {
 		try {
-			return await ApartRepository.getAllApartments();
+			return await ApartRepository.getAllRoom();
 		} catch (error) {
 			console.log('Error when getting notes', error.message);
 			throw error;
@@ -19,15 +20,15 @@ const ApartService = {
 
 	deleteApartments: async () => {
 		try {
-			return await ApartRepository.deleteApartments();
+			return await ApartRepository.deleteRoom();
 		} catch (error) {
 			console.log('Error when deleting notes', error.message);
 			throw error;
 		}
 	},
-	updateApart: async (id, updatedData) => {
+	updateApartment: async (id, updatedData) => {
 		try {
-			return await ApartRepository.updateApart(id, updatedData);
+			return await ApartRepository.updateRoom(id, updatedData);
 		} catch (error) {
 			console.log('Error when you create notes', error.message);
 			throw error;
@@ -35,17 +36,16 @@ const ApartService = {
 	},
 
 	// NotesRepository2.updateApart
-	updateAparts: async (updates) => {
+	updateAparts: async updates => {
 		try {
-			// updates - об'єкт, де ключі - це ідентифікатори записів, а значення - оновлені дані
-			const updatePromises = Object.keys(updates).map(async (id) => {
-				return ApartRepository.updateAparts(id, updates[id]);
+			const updatePromises = Object.entries(updates).map(async ([id, data]) => {
+				return ApartRepository.updateRoom(id, data);
 			});
 
-			const updatedNotes = await Promise.all(updatePromises);
-			return updatedNotes;
+			const updatedApartments = await Promise.all(updatePromises);
+			return updatedApartments;
 		} catch (error) {
-			console.error('Error updating notes:', error.message);
+			console.error('Error updating apartments:', error.message);
 			throw error;
 		}
 	},

@@ -1,16 +1,16 @@
-const Note2 = require('../../api/models/aparments.model');
+const Rooms = require('../../api/models/aparments.model');
 
 const ApartRepository = {
-	create: async (Name2, Surname2, price2, residence2) => {
+	createroom: async (name2, surname2, price2, residence2) => {
 		try {
-			const newNote2 = new Note2({
-				Name2,
-				Surname2,
+			const newroom = new Rooms({
+				name2,
+				surname2,
 				price2,
 				residence2,
 			});
 
-			await newNote2.save();
+			await newroom.save();
 
 			return { success: true, message: 'Note created successfully!' };
 		} catch (error) {
@@ -18,28 +18,28 @@ const ApartRepository = {
 			return { success: false, message: 'Internal server error' };
 		}
 	},
-	getAllApartments: async () => {
+	getAllRoom: async () => {
 		try {
-			return await Note2.find();
+			return await Rooms.find();
 		} catch (error) {
 			console.error('Error getting: ', error.message);
 			return { success: false, message: 'Internal server error' };
 		}
 	},
 
-	deleteApartments: async () => {
+	deleteRoom: async () => {
 		try {
-			return await Note2.deleteMany({}); // Use deleteMany to delete all documents
+			return await Rooms.deleteMany({}); // Use deleteMany to delete all documents
 		} catch (error) {
 			console.log('Error deleting notes:', error.message);
 			throw error;
 		}
 	},
-	updateApart: async (id, updatedData) => {
+	updateRoom: async (id, updatedData) => {
 		try {
 			console.log(`Updating note with ID: ${id}`);
 			updatedData.price = Number(updatedData.price);
-			const updatedApartes = await Note2.findByIdAndUpdate(id, updatedData, {
+			const updatedApartes = await Rooms.findByIdAndUpdate(id, updatedData, {
 				new: true,
 			});
 

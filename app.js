@@ -23,15 +23,15 @@ app.use('/notes', require('./api/router/notes.router'));
 app.use('/apartments', require('./api/router/apartmens.router'));
 app.use('/villa', require('./api/router/villa.router'));
 app.use('/appeal', require('./api/router/appeal.router'));
-app.use('/golovna', require('./api/router/notes.router'));
-app.use('/gol', require('./api/router/apartmens.router'));
-app.use('/go', require('./api/router/villa.router'));
-app.use('/g', require('./api/router/notes.router'));
-app.use('/villa', require('./api/router/villa.router'));
-app.use('/apart', require('./api/router/apartmens.router'));
-app.use('/up', require('./api/router/notes.router'));
-app.use('/upi', require('./api/router/apartmens.router'));
-app.use('/upvilla', require('./api/router/villa.router'));
+app.use('/getnote', require('./api/router/notes.router'));
+app.use('/getroom', require('./api/router/apartmens.router'));
+app.use('/getVilla', require('./api/router/villa.router'));
+app.use('/daletnote', require('./api/router/notes.router'));
+app.use('/deletevilla', require('./api/router/villa.router'));
+app.use('/deleteroom', require('./api/router/apartmens.router'));
+app.use('/updatehouse', require('./api/router/notes.router'));
+app.use('/updataroom', require('./api/router/apartmens.router'));
+app.use('/updatavilla', require('./api/router/villa.router'));
 
 app.use(express.json());
 app.use(cors()); // Enable CORS

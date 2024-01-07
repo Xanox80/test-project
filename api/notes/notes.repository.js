@@ -19,7 +19,7 @@ const NotesRepository = {
 		}
 	},
 
-	getAllNotes: async () => {
+	getAllNote: async () => {
 		try {
 			return await Note.find();
 		} catch (error) {

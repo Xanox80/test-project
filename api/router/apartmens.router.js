@@ -1,38 +1,34 @@
 const express = require('express');
-const NOts2 = require('../../api/apartments/apartments.service');
+const newroom = require('../../api/apartments/apartments.service');
 const ApartRouter = express.Router();
 
 ApartRouter.route('/api/cra').post(async (req, res) => {
-	const { Name2, Surname2, price2, residence2 } = req.body; // Extract title and content from request body
-	// console.log(Name2);
-	// console.log(Surname2);
-	// console.log(price2);
-	// console.log(residence2);
+	const { name2, surname2, price2, residence2 } = req.body; // Extract title and content from request body
 
-	const result = await NOts2.createn(Name2, Surname2, price2, residence2);
+	const result = await newroom.creatroom(name2, surname2, price2, residence2);
 	res.send(result);
 });
-ApartRouter.route('/api/getAllApartments').get(async (req, res) => {
-	// Corrected route
-	const result = await NOts2.getAllApartments();
+ApartRouter.route('/api/getAllroom').get(async (req, res) => {
+	// Corrected routea
+	const result = await newroom.getAllApartments();
 	res.send(result);
 });
 
-ApartRouter.delete('/api/deleteApartment/:noteIda', async (req, res) => {
+ApartRouter.delete('/api/deleterooms/:noteIda', async (req, res) => {
 	try {
-		const result = await NOts2.deleteApartments(); // Fix the function call
+		const result = await newroom.deleteApartments(); // Fix the function call
 		res.json(result);
 	} catch (error) {
 		console.error('Error deleting notes:', error.message);
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
-ApartRouter.patch('/api/updateApartment/:id', async (req, res) => {
+ApartRouter.patch('/api/updatarooms/:id', async (req, res) => {
 	const noteId = req.params.id; // Corrected from req.params.noteId to req.params.id
 	const updatedData = req.body;
 
 	try {
-		const updatedApartments = await NOts2.updateApart(noteId, updatedData);
+		const updatedApartments = await newroom.updateApartment(noteId, updatedData);
 
 		// Assuming you want to send the updated note back to the client
 		res.json(updatedApartments);

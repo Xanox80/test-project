@@ -5,7 +5,7 @@ const AppleaRouter = express.Router();
 AppleaRouter.route('/api/appl').post(async (req, res) => {
 	const { appeal, number } = req.body;
 
-	const result = await AppleaRepository.createA(appeal, number);
+	const result = await AppleaRepository.createn(appeal, number);
 	res.send(result);
 });
 

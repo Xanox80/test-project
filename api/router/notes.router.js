@@ -4,7 +4,7 @@ const NOts = require('../../api/notes/notes.service');
 const NotesRouter = express.Router();
 
 //create
-NotesRouter.route('/api/cr').post(async (req, res) => {
+NotesRouter.route('/api/creathouse').post(async (req, res) => {
 	const { Name, Surname, price, residence } = req.body;
 	const result = await NOts.createnot(Name, Surname, price, residence);
 	res.send(result);
@@ -13,7 +13,7 @@ NotesRouter.route('/api/cr').post(async (req, res) => {
 //get
 NotesRouter.route('/api/getAllNotes').get(async (req, res) => {
 	// Corrected route
-	const result = await NOts.getAllNotes();
+	const result = await NOts.getAllNote();
 	res.send(result);
 });
 
@@ -21,7 +21,7 @@ NotesRouter.route('/api/getAllNotes').get(async (req, res) => {
 // Replace NotesRepository with NOts
 NotesRouter.delete('/api/deleteNote/:noteId', async (req, res) => {
 	try {
-		const result = await NOts.deleteNotes(); // Fix the function call
+		const result = await NOts.deleteNote(); // Fix the function call
 		res.json(result);
 	} catch (error) {
 		console.error('Error deleting notes:', error.message);
@@ -29,7 +29,7 @@ NotesRouter.delete('/api/deleteNote/:noteId', async (req, res) => {
 	}
 });
 
-NotesRouter.patch('/api/notes/:id', async (req, res) => {
+NotesRouter.patch('/api/updatahouse/:id', async (req, res) => {
 	const noteId = req.params.id; // Corrected from req.params.noteId to req.params.id
 	const updatedData = req.body;
 

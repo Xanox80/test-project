@@ -1,32 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сайт нерухомості</title>
-    <!-- Додайте посилання на ваші CSS файли тут -->
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f0f0;
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Сайт нерухомості</title>
+		<style>
+			  body {
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
+            background: url('https://source.unsplash.com/1920x1080/?apartment') center/cover;
+            background-attachment: fixed;
         }
 
-        header {
-            background-color: #333;
-            color: #fff;
+        header,
+        nav {
+            background-color: rgba(51, 51, 51, 0.8); /* Transparent background */
+            color: #000; /* Text color set to black */
             text-align: center;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        nav {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -54,24 +46,34 @@
         }
 
         section {
+            display: flex;
+            flex-direction: column;
+            align-items: left;
             margin: 20px;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        button {
-            padding: 10px 20px;
+        .w-button {
+            text-align: left;
+            margin-bottom: 20px; /* Optional: Add margin between sections */
+        }
+
+        button,
+        .weather-button button,
+        button.edit-button {
+            padding: 12px 24px;
             background-color: #3498db;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-bottom: 10px;
+            font-size: 16px;
         }
 
-        button:hover {
+        button:hover,
+        .weather-button button:hover,
+        button.edit-button:hover {
             background-color: #2980b9;
         }
 
@@ -86,26 +88,32 @@
             margin-top: 20px;
         }
 
-        .weather-button button {
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+        .weather-button a {
+            text-decoration: none;
         }
 
-        .weather-button button:hover {
-            background-color: #2980b9;
+        .weather-button button:focus,
+        button:focus,
+        .weather-button button.edit-button:focus {
+            outline: none;
+            box-shadow: 0 0 5px #3498db;
         }
 
-        .weather-button img {
-            width: 20px;
-            margin-right: 5px;
+        #editModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 999;
         }
     </style>
 </head>
+
 <body>
     <header>
         <h1>Ласкаво просимо на сайт нерухомості</h1>
@@ -119,317 +127,362 @@
             <li><a href="Create.html">Додати Апартаменти</a></li>
         </ul>
     </nav>
+	
+		<section>
+			<div class="w-button">
+				<button id="getDataButton" type="button">Переглянути Квартири</button>
+				<div id="notes-container"></div>
+				<button id="deleteNoteButton" onclick="deleteNote('noteIdToBeDeleted')">Delete House</button>
+			</div>
+	
+			<div class="w-button">
+				<button id="getDataButtonHouse" type="button">Переглянути Будинки</button>
+				<div id="notes-container-house"></div>
+				<button id="deleteApartmentsButton" onclick="deleteNote('noteIdToBeDeletedApartmentsі')">Delete Note</button>
+			</div>
+	
+			<div class="w-button">
+				<button id="getDataButtonVilla" type="button">Переглянути Віллу</button>
+				<div id="notes-container-villa"></div>
+				<button id="deleteVillaButton" onclick="deleteNote('noteIdToBeDeletedVilla')">Delete Villa</button>
+			</div>
+		</section>
+	
+		<div class="weather-button">
+			<a href="pogoda.html">
+				<button type="button">Погода</button>
+			</a>
+		</div>
+	
+		<div id="editModal" style="display: none">
+			<h2>Edit Note</h2>
+			<form onsubmit="submitEditForm(); return false;">
+				<label for="editName">Name:</label>
+				<input type="text" id="editName" required /><br />
+	
+				<label for="editSurname">Surname:</label>
+				<input type="text" id="editSurname" required /><br />
+	
+				<label for="editPrice">Price:</label>
+				<input type="number" id="editPrice" required /><br />
+	
+				<label for="editResidence">Residence:</label>
+				<input type="text" id="editResidence" required /><br />
+	
+				<input type="submit" value="Save" />
+			</form>
+		</div>
+	
+		<footer>&copy; 2023 Ваша компанія. Усі права захищені.</footer>
+	</body>
+</body>
 
-    <section>
-        <div class="w-button">
-            <button id="getDataButton" type="button">Переглянути Квартири</button>
-            <div id="notes-container"></div>
-            <button id="deleteNoteButton" onclick="deleteNote('noteIdToBeDeleted')">Delete House</button>
+		<script>
+			//    отримання об'єктів -->
+			document
+				.getElementById('getDataButton')
+				.addEventListener('click', fetchAndDisplayNotes);
+			document
+				.getElementById('getDataButtonHouse')
+				.addEventListener('click', fetchAndDisplayApartments);
+			document
+				.getElementById('getDataButtonVilla')
+				.addEventListener('click', fetchAndDisplayVilla);
 
-        </div>
+			//  Скомуниздив функцію зі свого коду (Функція яка шле реквести до сервера і повертає результат)
+			async function sendRequest(method, url, data) {
+				const response = await fetch(url, {
+					method,
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
+				});
 
-        <div class="w-button">
-            <button id="getDataButtonHouse" type="button">Переглянути Будинки</button>
-            <div id="notes-container-house"></div>
-            <button id="deleteApartmentsButton" onclick="deleteNote('noteIdToBeDeletedApartmentsі')">Delete Note</button>
-        </div>
-        <div class="w-button">
-            <button id="getDataButtonVilla" type="button">Переглянути Віллу</button>
-            <div id="notes-container-villa"></div>
-            <button id="deleteVillaButton" onclick="deleteNote('noteIdToBeDeletedVilla')">Delete Villa</button>
-        </div>
-    </section>
+				// Return response text for non-JSON responses
+				const contentType = response.headers.get('content-type');
+				if (contentType && contentType.includes('application/json')) {
+					return response.json();
+				} else {
+					return response.text();
+				}
+			}
 
-    <div class="weather-button">
-        <a href="pogoda.html">
-            <button type="button">Погода</button>
-        </a>
-        
-    </div>
-    <!-- Add more divs as needed -->
-  </ul>
-  <button onclick="updateNoteModal('${note.id}')">Edit</button>
-  <!-- HTML for the edit form -->
-  <div id="editModal" style="display: none;">
-    <h2>Edit Note</h2>
-    <form onsubmit="submitEditForm(); return false;">
-        <label for="editName">Name:</label>
-        <input type="text" id="editName" required><br>
+			// Remove the window.addEventListener('load', ...) for each function
 
-        <label for="editSurname">Surname:</label>
-        <input type="text" id="editSurname" required><br>
+			async function fetchAndDisplayNotes() {
+				try {
+					const responseData = await sendRequest(
+						'GET',
+						'/getnote/api/getAllNotes'
+					);
 
-        <label for="editPrice">Price:</label>
-        <input type="number" id="editPrice" required><br>
+					if (Array.isArray(responseData)) {
+						const notesContainer = document.getElementById('notes-container');
+						notesContainer.innerHTML = '';
 
-        <label for="editResidence">Residence:</label>
-        <input type="text" id="editResidence" required><br>
-
-        <input type="submit" value="Save">
-    </form>
-</div>
-
-
-    <footer>
-        &copy; 2023 Ваша компанія. Усі права захищені.
-    </footer>
-
-    <script>
-
-      //    отримання об'єктів -->
-        document.getElementById('getDataButton').addEventListener('click', fetchAndDisplayNotes);
-        document.getElementById('getDataButtonHouse').addEventListener('click', fetchAndDisplayApartments);
-        document.getElementById('getDataButtonVilla').addEventListener('click', fetchAndDisplayVilla);
-
-    //  Скомуниздив функцію зі свого коду (Функція яка шле реквести до сервера і повертає результат)
-async function sendRequest(method, url, data) {    
-    const response = await fetch(url, {
-        method,
-        headers: {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-    });
-
-    // Return response text for non-JSON responses
-    const contentType = response.headers.get("content-type");
-    if (contentType && contentType.includes("application/json")) {
-        return response.json();
-    } else {
-        return response.text();
-    }
-}
-
-// Remove the window.addEventListener('load', ...) for each function
-
-async function fetchAndDisplayNotes() {
-  try {
-    const responseData = await sendRequest("GET", "/golovna/api/getAllNotes");
-
-    if (Array.isArray(responseData)) {
-      const notesContainer = document.getElementById('notes-container');
-      notesContainer.innerHTML = '';
-
-      for (const data of responseData) {
-        const noteDiv = document.createElement('div');
-        noteDiv.innerHTML = `<strong>Name:</strong><p id="name">${data.Name}</p><br>
+						for (const data of responseData) {
+							const noteDiv = document.createElement('div');
+							noteDiv.innerHTML = `<strong>Name:</strong><p id="name">${data.Name}</p><br>
                <strong>Surname:</strong><p id="surname">${data.Surname}</p><br>
                <strong>Price:</strong><p id="price">${data.price}</p><br>
                <strong>Residence:</strong><p id="residence">${data.residence}</p><br><br>
                <div><button class="edit-btn">Edit</button><button class="delete-btn">Delete</button></div>
                <div><button class="confirm-btn" style="display:none;">Confirm</button></div>`;
 
-        notesContainer.appendChild(noteDiv);
+							notesContainer.appendChild(noteDiv);
 
-        // Delete button functionality
-        const deleteBtn = noteDiv.querySelector(".delete-btn");
-        deleteBtn.addEventListener('click', async function () {
-          try {
-            await sendRequest('DELETE', '/g/api/deleteNote/' + data._id);
-            noteDiv.remove();
-          } catch (error) {
-            console.error('Error deleting note:', error.message);
-          }
-        });
+							// Delete button functionality
+							const deleteBtn = noteDiv.querySelector('.delete-btn');
+							deleteBtn.addEventListener('click', async function () {
+								try {
+									await sendRequest(
+										'DELETE',
+										'/daletnote/api/deleteNote/' + data._id
+									);
+									noteDiv.remove();
+								} catch (error) {
+									console.error('Error deleting note:', error.message);
+								}
+							});
 
-        // Edit button functionality
-        const editBtn = noteDiv.querySelector(".edit-btn");
-        const confirmBtn = noteDiv.querySelector(".confirm-btn");
-        const Name = noteDiv.querySelector("#name");
-        const Surname = noteDiv.querySelector("#surname");
-        const price = noteDiv.querySelector("#price");
-        const residence = noteDiv.querySelector("#residence");
+							// Edit button functionality
+							const editBtn = noteDiv.querySelector('.edit-btn');
+							const confirmBtn = noteDiv.querySelector('.confirm-btn');
+							const Name = noteDiv.querySelector('#name');
+							const Surname = noteDiv.querySelector('#surname');
+							const price = noteDiv.querySelector('#price');
+							const residence = noteDiv.querySelector('#residence');
 
-        editBtn.addEventListener('click', function () {
-          Name.contentEditable = true;
-          Surname.contentEditable = true;
-          price.contentEditable = true;
-          residence.contentEditable = true;
-          confirmBtn.style.display = "inline";
-        });
+							editBtn.addEventListener('click', function () {
+								Name.contentEditable = true;
+								Surname.contentEditable = true;
+								price.contentEditable = true;
+								residence.contentEditable = true;
+								confirmBtn.style.display = 'inline';
+							});
 
-        confirmBtn.addEventListener('click', async function () {
-          try {
-            Name.contentEditable = false;
-            Surname.contentEditable = false;
-            price.contentEditable = false;
-            residence.contentEditable = false;
-            confirmBtn.style.display = "none";
+							confirmBtn.addEventListener('click', async function () {
+								try {
+									Name.contentEditable = false;
+									Surname.contentEditable = false;
+									price.contentEditable = false;
+									residence.contentEditable = false;
+									confirmBtn.style.display = 'none';
 
-            await sendRequest('PATCH', '/up/api/notes/' + data._id, {
-              Name: Name.textContent,
-              Surname: Surname.textContent,
-              price: price.textContent,
-              residence: residence.textContent
-            });
-          } catch (error) {
-            console.error('Error updating note:', error.message);
-          }
-        });
-      }
-    } else {
-      console.error('Invalid or missing data in the response', responseData);
-    }
-  } catch (error) {
-    console.error('Error fetching notes:', error.message);
-  }
-}
+									await sendRequest(
+										'PATCH',
+										'/updatehouse/api/updatahouse/' + data._id,
+										{
+											Name: Name.textContent,
+											Surname: Surname.textContent,
+											price: price.textContent,
+											residence: residence.textContent,
+										}
+									);
+								} catch (error) {
+									console.error('Error updating note:', error.message);
+								}
+							});
+						}
+					} else {
+						console.error(
+							'Invalid or missing data in the response',
+							responseData
+						);
+					}
+				} catch (error) {
+					console.error('Error fetching notes:', error.message);
+				}
+			}
 
-async function fetchAndDisplayApartments() {
-  try {
-    const responseData1 = await sendRequest("GET", "/gol/api/getAllApartments");
+			async function fetchAndDisplayApartments() {
+				try {
+					const responseData1 = await sendRequest(
+						'GET',
+						'/getroom/api/getAllroom'
+					);
 
-    if (Array.isArray(responseData1)) {
-      const notesContainerHouse = document.getElementById('notes-container-house');
-      notesContainerHouse.innerHTML = '';
+					if (Array.isArray(responseData1)) {
+						const notesContainerHouse = document.getElementById(
+							'notes-container-house'
+						);
+						notesContainerHouse.innerHTML = '';
 
-      for (const data of responseData1) {
-        const noteDiv1 = document.createElement('div');
-        noteDiv1.innerHTML = `<strong>Name:</strong><p id="name2">${data.Name2}</p><br>
-               <strong>Surname:</strong><p id="surname2">${data.Surname2}</p><br>
+						for (const data of responseData1) {
+							const noteDiv1 = document.createElement('div');
+							noteDiv1.innerHTML = `<strong>name:</strong><p id="name2">${data.name2}</p><br>
+               <strong>surname:</strong><p id="surname2">${data.surname2}</p><br>
                <strong>Price:</strong><p id="price2">${data.price2}</p><br>
                <strong>Residence:</strong><p id="residence2">${data.residence2}</p><br><br>
                <div><button class="edit-btn2">Edit</button><button class="delete-btn2">Delete</button></div>
                <div><button class="confirm-btn2" style="display:none;">Confirm</button></div>`;
 
-        notesContainerHouse.appendChild(noteDiv1);
+							notesContainerHouse.appendChild(noteDiv1);
 
-        // Delete button functionality
-        const deleteBtn2 = noteDiv1.querySelector(".delete-btn2");
-        deleteBtn2.addEventListener('click', async function () {
-          try {
-            await sendRequest('DELETE', '/apart/api/deleteApartment/' + data._id);
-            noteDiv1.remove();
-          } catch (error) {
-            console.error('Error deleting apartment:', error.message);
-          }
-        });
+							// Delete button functionality
+							const deleteBtn2 = noteDiv1.querySelector('.delete-btn2');
+							deleteBtn2.addEventListener('click', async function () {
+								try {
+									await sendRequest(
+										'DELETE',
+										'/deleteroom/api/deleterooms/' + data._id
+									);
+									noteDiv1.remove();
+								} catch (error) {
+									console.error(
+										'Error deleting apartment:',
+										error.message
+									);
+								}
+							});
 
-        // Edit button functionality
-        const editBtn2 = noteDiv1.querySelector(".edit-btn2");
-        const confirmBtn2 = noteDiv1.querySelector(".confirm-btn2");
-        const Name2 = noteDiv1.querySelector("#name2");
-        const Surname2 = noteDiv1.querySelector("#surname2");
-        const price2 = noteDiv1.querySelector("#price2");
-        const residence2 = noteDiv1.querySelector("#residence2");
+							// Edit button functionality
+							const editBtn2 = noteDiv1.querySelector('.edit-btn2');
+							const confirmBtn2 = noteDiv1.querySelector('.confirm-btn2');
+							const name2 = noteDiv1.querySelector('#name2');
+							const surname2 = noteDiv1.querySelector('#surname2');
+							const price2 = noteDiv1.querySelector('#price2');
+							const residence2 = noteDiv1.querySelector('#residence2');
 
-        editBtn2.addEventListener('click', function () {
-          Name2.contentEditable = true;
-          Surname2.contentEditable = true;
-          price2.contentEditable = true;
-          residence2.contentEditable = true;
-          confirmBtn2.style.display = "inline";
-        });
+							editBtn2.addEventListener('click', function () {
+								name2.contentEditable = true;
+								surname2.contentEditable = true;
+								price2.contentEditable = true;
+								residence2.contentEditable = true;
+								confirmBtn2.style.display = 'inline';
+							});
 
-        confirmBtn2.addEventListener('click', async function () {
-          try {
-            Name2.contentEditable = false;
-            Surname2.contentEditable = false;
-            price2.contentEditable = false;
-            residence2.contentEditable = false;
-            confirmBtn2.style.display = "none";
+							confirmBtn2.addEventListener('click', async function () {
+								try {
+									name2.contentEditable = false;
+									surname2.contentEditable = false;
+									price2.contentEditable = false;
+									residence2.contentEditable = false;
+									confirmBtn2.style.display = 'none';
 
-            await sendRequest('PATCH', '/upi/api/updateApartment/' + data._id, {
-              Name2: Name2.textContent,
-              Surname2: Surname2.textContent,
-              price2: price2.textContent,
-              residence2: residence2.textContent
-            });
-          } catch (error) {
-            console.error('Error updating apartment:', error.message);
-          }
-        });
-      }
-    } else {
-      console.error('Invalid or missing data in the response', responseData1);
-    }
-  } catch (error) {
-    console.error('Error fetching apartments:', error.message);
-  }
-}
+									await sendRequest(
+										'PATCH',
+										'/updataroom/api/updatarooms/' + data._id,
+										{
+											name2: name2.textContent,
+											surname2: surname2.textContent,
+											price2: price2.textContent,
+											residence2: residence2.textContent,
+										}
+									);
+								} catch (error) {
+									console.error(
+										'Error updating apartment:',
+										error.message
+									);
+								}
+							});
+						}
+					} else {
+						console.error(
+							'Invalid or missing data in the response',
+							responseData1
+						);
+					}
+				} catch (error) {
+					console.error('Error fetching apartments:', error.message);
+				}
+			}
 
+			async function fetchAndDisplayVilla() {
+				try {
+					const responseData2 = await sendRequest(
+						'GET',
+						'/getVilla/api/getAllVilla'
+					);
 
+					if (Array.isArray(responseData2)) {
+						const notesContainerVilla = document.getElementById(
+							'notes-container-villa'
+						);
+						notesContainerVilla.innerHTML = '';
 
-
-
-
-
-async function  fetchAndDisplayVilla() {
-  try {
-    const responseData2 = await sendRequest("GET", "/go/api/getAllVilla");
-
-    if (Array.isArray(responseData2)) {
-      const notesContainerVilla = document.getElementById('notes-container-villa');
-      notesContainerVilla.innerHTML = '';
-
-      for (const data of responseData2) {
-        const noteDiv2 = document.createElement('div');
-        noteDiv2.innerHTML = `<strong>Name:</strong><p id="name3">${data.Name3}</p><br>
-               <strong>Surname:</strong><p id="surname3">${data.Surname3}</p><br>
+						for (const data of responseData2) {
+							const noteDiv2 = document.createElement('div');
+							noteDiv2.innerHTML = `<strong>Name:</strong><p id="name3">${data.name3}</p><br>
+               <strong>Surname:</strong><p id="surname3">${data.surname3}</p><br>
                <strong>Price:</strong><p id="price3">${data.price3}</p><br>
                <strong>Residence:</strong><p id="residence3">${data.residence3}</p><br><br>
                <div><button class="edit-btn3">Edit</button><button class="delete-btn3">Delete</button></div>
                <div><button class="confirm-btn3" style="display:none;">Confirm</button></div>`;
 
-        notesContainerVilla.appendChild(noteDiv2);
+							notesContainerVilla.appendChild(noteDiv2);
 
-        // Delete button functionality
-        const deleteBtn3 = noteDiv2.querySelector(".delete-btn3");
-        deleteBtn3.addEventListener('click', async function () {
-          try {
-            await sendRequest('DELETE', '/villa/api/deleteVilla/' + data._id);
-            noteDiv1.remove();
-          } catch (error) {
-            console.error('Error deleting apartment:', error.message);
-          }
-        });
+							// Delete button functionality
+							const deleteBtn3 = noteDiv2.querySelector('.delete-btn3');
+							deleteBtn3.addEventListener('click', async function () {
+								try {
+									await sendRequest(
+										'DELETE',
+										'/deletevilla/api/deleteVilla/' + data._id
+									);
+									noteDiv1.remove();
+								} catch (error) {
+									console.error(
+										'Error deleting apartment:',
+										error.message
+									);
+								}
+							});
 
-        // Edit button functionality
-        const editBtn3 = noteDiv2.querySelector(".edit-btn3");
-        const confirmBtn3 = noteDiv2.querySelector(".confirm-btn3");
-        const Name3 = noteDiv2.querySelector("#name3");
-        const Surname3 = noteDiv2.querySelector("#surname3");
-        const price3 = noteDiv2.querySelector("#price3");
-        const residence3 = noteDiv2.querySelector("#residence3");
+							// Edit button functionality
+							const editBtn3 = noteDiv2.querySelector('.edit-btn3');
+							const confirmBtn3 = noteDiv2.querySelector('.confirm-btn3');
+							const name3 = noteDiv2.querySelector('#name3');
+							const surname3 = noteDiv2.querySelector('#surname3');
+							const price3 = noteDiv2.querySelector('#price3');
+							const residence3 = noteDiv2.querySelector('#residence3');
 
-        editBtn3.addEventListener('click', function () {
-          Name3.contentEditable = true;
-          Surname3.contentEditable = true;
-          price3.contentEditable = true;
-          residence3.contentEditable = true;
-          confirmBtn3.style.display = "inline";
-        });
+							editBtn3.addEventListener('click', function () {
+								name3.contentEditable = true;
+								surname3.contentEditable = true;
+								price3.contentEditable = true;
+								residence3.contentEditable = true;
+								confirmBtn3.style.display = 'inline';
+							});
 
-        confirmBtn3.addEventListener('click', async function () {
-          try {
-            Name3.contentEditable = false;
-            Surname3.contentEditable = false;
-            price3.contentEditable = false;
-            residence3.contentEditable = false;
-            confirmBtn3.style.display = "none";
+							confirmBtn3.addEventListener('click', async function () {
+								try {
+									name3.contentEditable = false;
+									surname3.contentEditable = false;
+									price3.contentEditable = false;
+									residence3.contentEditable = false;
+									confirmBtn3.style.display = 'none';
 
-            await sendRequest('PATCH', '/upvilla/api/updateVilla/' + data._id, {
-              Name3: Name3.textContent,
-              Surname3: Surname3.textContent,
-              price3: price3.textContent,
-              residence3: residence3.textContent
-            });
-          } catch (error) {
-            console.error('Error updating apartment:', error.message);
-          }
-        });
-      }
-    } else {
-      console.error('Invalid or missing data in the response', responseData2);
-    }
-  } catch (error) {
-    console.error('Error fetching apartments:', error.message);
-  }
-}
-
-    </script>
-
-</body>
+									await sendRequest(
+										'PATCH',
+										'/updatavilla/api/updateVilla/' + data._id,
+										{
+											name3: name3.textContent,
+											surname3: surname3.textContent,
+											price3: price3.textContent,
+											residence3: residence3.textContent,
+										}
+									);
+								} catch (error) {
+									console.error(
+										'Error updating apartment:',
+										error.message
+									);
+								}
+							});
+						}
+					} else {
+						console.error(
+							'Invalid or missing data in the response',
+							responseData2
+						);
+					}
+				} catch (error) {
+					console.error('Error fetching apartments:', error.message);
+				}
+			}
+		</script>
+	</body>
 </html>
-
-

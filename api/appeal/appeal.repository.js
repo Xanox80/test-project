@@ -1,7 +1,7 @@
 const Appeal = require('../../api/models/appeal.model');
 
 const AppealRepository = {
-	createA: async (appeal, number) => {
+	createApplea: async (appeal, number) => {
 		try {
 			const newNote4 = new Appeal({
 				appeal,

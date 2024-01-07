@@ -9,15 +9,15 @@ const NotesService = {
 		}
 	},
 
-	getAllNotes: async () => {
+	getAllNote: async () => {
 		try {
-			return await NotesRepository.getAllNotes();
+			return await NotesRepository.getAllNote();
 		} catch (error) {
 			console.log('Error when getting notes', error.message);
 			throw error;
 		}
 	},
-	deleteNotes: async () => {
+	deleteNote: async () => {
 		try {
 			return await NotesRepository.deleteNotes();
 		} catch (error) {
@@ -33,10 +33,10 @@ const NotesService = {
 			throw error;
 		}
 	},
-	updateNotes: async (updates) => {
+	updateNotes: async updates => {
 		try {
 			// updates - об'єкт, де ключі - це ідентифікатори записів, а значення - оновлені дані
-			const updatePromises = Object.keys(updates).map(async (id) => {
+			const updatePromises = Object.keys(updates).map(async id => {
 				return NotesRepository.updateNote(id, updates[id]);
 			});
 

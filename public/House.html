@@ -1,142 +1,161 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes App</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(45deg, #fc00ff, #00dbde);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Notes App</title>
+		<style>
+			body {
+				font-family: 'Arial', sans-serif;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+				background: url('https://source.unsplash.com/1920x1080/?apartment')
+					center/cover;
+				background-attachment: fixed;
+			}
+			/* body {
+				font-family: 'Arial', sans-serif;
+				background: linear-gradient(45deg, #fc00ff, #00dbde);
+				margin: 0;
+				padding: 0;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+			} */
 
-        form {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
-            width: 100%;
-            animation: fadeInUp 1s ease;
-        }
+			form {
+				background: rgba(255, 255, 255, 0.8);
+				padding: 20px;
+				border-radius: 10px;
+				box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+				max-width: 400px;
+				width: 100%;
+				animation: fadeInUp 1s ease;
+			}
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+			@keyframes fadeInUp {
+				from {
+					opacity: 0;
+					transform: translateY(20px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
-        }
+			label {
+				display: block;
+				margin-bottom: 8px;
+				font-weight: bold;
+				color: #333;
+			}
 
-        input, textarea, number {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 16px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
+			input,
+			textarea,
+			number {
+				width: 100%;
+				padding: 8px;
+				margin-bottom: 16px;
+				box-sizing: border-box;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+			}
 
-        button {
-            background: linear-gradient(45deg, #4caf50, #45a049);
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            margin-right: 10px; /* Added margin to separate buttons */
-        }
+			button {
+				background: linear-gradient(45deg, #4caf50, #45a049);
+				color: #fff;
+				padding: 10px 20px;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				transition: background 0.3s ease;
+				margin-right: 10px; /* Added margin to separate buttons */
+			}
 
-        button:hover {
-            background: linear-gradient(45deg, #45a049, #4caf50);
-        }
-    </style>
-</head>
-<body>
-    <form id="noteForm">
-       
-        <label for="Name">Ім'я:</label>
-        <input type="text" id="Name" required>
+			button:hover {
+				background: linear-gradient(45deg, #45a049, #4caf50);
+			}
+		</style>
+	</head>
+	<body>
+		<form id="noteForm">
+			<label for="Name">Ім'я:</label>
+			<input type="text" id="Name" required />
 
-        <label for="Surname">Прізвище:</label>
-        <textarea id="Surname" required></textarea>
+			<label for="Surname">Прізвище:</label>
+			<textarea id="Surname" required></textarea>
 
-        <label for="price">Ціна:</label>
-        <input type="number" id="price" required>
+			<label for="price">Ціна:</label>
+			<input type="number" id="price" required />
 
-        <label for="residence">Місце знаходження та кількість кімнат</label>
-        <input type="text" id="residence" required>
+			<label for="residence">Місце знаходження та кількість кімнат</label>
+			<input type="text" id="residence" required />
 
-        <button type="submit">Create Note</button>
+			<button type="submit">Create Note</button>
 
-        <!-- New button next to "Create Note" button -->
-        <a href="Create.html">
-            <button type="button">Create
-            </button>
-        </a>
-    </form>
-    
-    <div id="notes-container"></div>
-    
-    <script>
-        document.getElementById('noteForm').addEventListener('submit', async function (event) {
-            event.preventDefault();
-    
-            const Name = document.getElementById('Name').value;
-            const Surname = document.getElementById('Surname').value;
-            const price = document.getElementById('price').value;
-            const residence = document.getElementById('residence').value;
-    
-            if (Name.trim() === '' || Surname.trim() === '' || price.trim() === '' || residence.trim() === '') {
-                console.error('Error: All fields are required');
-                return;
-            }
-    
-            try {
-                const response = await fetch('/notes/api/cr', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ Name, Surname, price, residence })
-                });
-    
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-    
-                // After submitting a new note, fetch and display all notes again
-                fetchAndDisplayNotes();
-            } catch (error) {
-                console.error('Error:', error.message);
-            }
-    
-            // Clear form fields
-            document.getElementById('Name').value = '';
-            document.getElementById('Surname').value = '';
-            document.getElementById('price').value = '';
-            document.getElementById('residence').value = '';
-        });
-    
-        // Fetch and display notes when the page loads
-        window.addEventListener('load', fetchAndDisplayNotes);
-    </script>
-</body>
+			<!-- New button next to "Create Note" button -->
+			<a href="Create.html">
+				<button type="button">Create</button>
+			</a>
+		</form>
+
+		<div id="notes-container"></div>
+
+		<script>
+			document
+				.getElementById('noteForm')
+				.addEventListener('submit', async function (event) {
+					event.preventDefault();
+
+					const Name = document.getElementById('Name').value;
+					const Surname = document.getElementById('Surname').value;
+					const price = document.getElementById('price').value;
+					const residence = document.getElementById('residence').value;
+
+					if (
+						Name.trim() === '' ||
+						Surname.trim() === '' ||
+						price.trim() === '' ||
+						residence.trim() === ''
+					) {
+						console.error('Error: All fields are required');
+						return;
+					}
+
+					try {
+						const response = await fetch('/notes/api/creathouse', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify({ Name, Surname, price, residence }),
+						});
+
+						if (!response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						}
+
+						// After submitting a new note, fetch and display all notes again
+						fetchAndDisplayNotes();
+					} catch (error) {
+						console.error('Error:', error.message);
+					}
+
+					// Clear form fields
+					document.getElementById('Name').value = '';
+					document.getElementById('Surname').value = '';
+					document.getElementById('price').value = '';
+					document.getElementById('residence').value = '';
+				});
+
+			// Fetch and display notes when the page loads
+			window.addEventListener('load', fetchAndDisplayNotes);
+		</script>
+	</body>
 </html>
