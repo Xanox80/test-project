@@ -1,136 +1,171 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <!-- Head content... -->
-    <style>
-        /* Shared styles for both pages */
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(45deg, #fc00ff, #00dbde);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Create Villa Form</title>
+		<style>
+			body {
+				font-family: 'Arial', sans-serif;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+				background: url('https://source.unsplash.com/1920x1080/?apartment')
+					center/cover;
+				background-attachment: fixed;
+			}
 
-        /* Specific style for the form with the class "apartmentForm" */
-        form.apartmentForm {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
-            width: 100%;
-            animation: fadeInUp 1s ease;
-            /* Add any specific styles for the Apartment form here */
-            border: 2px solid #3498db;
-        }
+			form.apartmentForm {
+				background: rgba(255, 255, 255, 0.8);
+				padding: 20px;
+				border-radius: 10px;
+				box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+				max-width: 400px;
+				width: 100%;
+				animation: fadeInUp 1s ease;
+				border: 2px solid #3498db;
+			}
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+			@keyframes fadeInUp {
+				from {
+					opacity: 0;
+					transform: translateY(20px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
-        }
+			label {
+				display: block;
+				margin-bottom: 8px;
+				font-weight: bold;
+				color: #333;
+			}
 
-        input, textarea, number {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 16px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
+			input,
+			textarea,
+			number {
+				width: 100%;
+				padding: 8px;
+				margin-bottom: 16px;
+				box-sizing: border-box;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+			}
 
-        button {
-            background: linear-gradient(45deg, #4caf50, #45a049);
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
+			button {
+				background: linear-gradient(45deg, #ff5f6d, #ffc371);
+				color: #fff;
+				padding: 10px 20px;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				transition: background 0.3s ease;
+			}
 
-        button:hover {
-            background: linear-gradient(45deg, #45a049, #4caf50);
-        }
-    </style>
-</head>
-<body>
-    <!-- Form with the class "apartmentForm" -->
-    <form id="noteForm" class="apartmentForm">
-        <label for="Name3">Ім'я:</label>
-        <input type="text" id="Name3" required>
+			button:hover {
+				background: linear-gradient(45deg, #ffc371, #ff5f6d);
+			}
 
-        <label for="Surname3">Прізвище:</label>
-        <textarea id="Surname3" required></textarea>
+			a {
+				text-decoration: none;
+				display: block;
+				margin-top: 10px;
+			}
 
-        <label for="price3">Ціна:</label>
-        <input type="number" id="price3" required>
+			a button {
+				background: linear-gradient(45deg, #45a049, #4caf50);
+			}
 
-        <label for="residence3">Місце знаходження та кількість кімнат</label>
-        <input type="text" id="residence3" required>
+			a button:hover {
+				background: linear-gradient(45deg, #4caf50, #45a049);
+			}
+		</style>
+	</head>
+	<body>
+		<form id="noteForm" class="apartmentForm">
+			<label for="nameVilla">Ім'я:</label>
+			<input type="text" id="nameVilla" required />
 
-        <button type="submit">Create Apartment</button>
-    </form>
-    <div id="notes-container"></div>
-    <!-- Script for form submission... -->
-    <script>
-        document.getElementById('noteForm').addEventListener('submit', async function (event) {
-            event.preventDefault();
+			<label for="surnameVilla">Прізвище:</label>
+			<textarea id="surnameVilla" required></textarea>
 
-            const Name3 = document.getElementById('Name3').value;
-           
-            const Surname3 = document.getElementById('Surname3').value;
-        
-            const price3 = document.getElementById('price3').value;
-            
-            const residence3 = document.getElementById('residence3').value;
-            
+			<label for="price">Ціна:</label>
+			<input type="number" id="price" required />
 
-            if (Name3.trim() === '' || Surname3.trim() === '' || price3.trim() === '' || residence3.trim() === '') {
-                console.error('Error: All fields are required');
-                return;
-            }
+			<label for="residence">Місце знаходження та кількість кімнат</label>
+			<input type="text" id="residence" required />
+			<input type="file" id="photo" accept="image/*" />
 
-            try {
-                const response = await fetch('/villa/api/create', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ Name3, Surname3, price3, residence3 })
-                });
+			<button type="submit">Create Villa</button>
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
+			<!-- Button to redirect to the Create page -->
+			<a href="Create.html">
+				<button type="button">Create</button>
+			</a>
+		</form>
 
-                const responseData = await response.json();
-                console.log('Server response:', responseData);
-            } catch (error) {
-                console.error('Error:', error.message);
-            }
+		<div id="notes-container"></div>
 
-            document.getElementById('Name3').value = '';
-            document.getElementById('Surname3').value = '';
-            document.getElementById('price3').value = '';
-            document.getElementById('residence3').value = '';
-        });
-    </script>
-</body>
+		<script>
+			document
+				.getElementById('noteForm')
+				.addEventListener('submit', async function (event) {
+					event.preventDefault();
+
+					const nameVilla = document.getElementById('nameVilla').value;
+					const surnameVilla = document.getElementById('surnameVilla').value;
+					const price = document.getElementById('price').value;
+					const residence = document.getElementById('residence').value;
+					const photo = document.getElementById('photo').value;
+
+					if (
+						nameVilla.trim() === '' ||
+						surnameVilla.trim() === '' ||
+						price.trim() === '' ||
+						residence.trim() === '' ||
+						photo.trim() === ''
+					) {
+						console.error('Error: All fields are required');
+						return;
+					}
+
+					try {
+						const response = await fetch('/villa/api/create', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify({
+								nameVilla,
+								surnameVilla,
+								price,
+								residence,
+								photo,
+							}),
+						});
+
+						if (!response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						}
+
+						const responseData = await response.json();
+						console.log('Server response:', responseData);
+					} catch (error) {
+						console.error('Error:', error.message);
+					}
+
+					document.getElementById('nameVilla').value = '';
+					document.getElementById('surnameVilla').value = '';
+					document.getElementById('price').value = '';
+					document.getElementById('residence').value = '';
+					document.getElementById('photo').value = '';
+				});
+		</script>
+	</body>
 </html>

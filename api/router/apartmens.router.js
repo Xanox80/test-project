@@ -1,30 +1,57 @@
 const express = require('express');
-const NOts2 = require('../../api/service/apartments.service');
-const NotesRouter2 = express.Router();
+const newRoom = require('../../api/apartments/apartments.service');
+const ApartRouter = express.Router();
 
-NotesRouter2.route('/api/cra').post(async (req, res) => {
-    const { Name2, Surname2,price2,residence2 } = req.body; // Extract title and content from request body
-    // console.log(Name2);
-    // console.log(Surname2);
-    // console.log(price2);
-    // console.log(residence2);
+ApartRouter.route('/api/createApartament').post(async (req, res) => {
+	const { nameRoom, surnameRoom, price, residence, photoRoom } = req.body; // Extract title and content from request body
 
-    const result = await NOts2.create(Name2, Surname2,price2,residence2);
-    res.send(result);
-});
-NotesRouter2.route('/api/getAllApartments').get(async (req, res) => { // Corrected route
-    const result = await NOts2.getAllApartments();
-    res.send(result);
+	const result = await newRoom.creatRoom(
+		nameRoom,
+		surnameRoom,
+		price,
+		residence,
+		photoRoom
+	);
+	res.send(result);
 });
 
-NotesRouter2.delete('/api/deleteApart/:noteIda', async (req, res) => {
-    try {
-        const result = await NOts2.deleteApartments();  // Fix the function call
-        res.json(result);
-    } catch (error) {
-        console.error('Error deleting notes:', error.message);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+ApartRouter.route('/api/getPhotoApartament/:id').get(async (req, res) => {
+	const result = await newRoom.getPhotoRoom();
+	res.send(result);
 });
 
-module.exports = NotesRouter2;
+ApartRouter.route('/api/getAllRoom').get(async (req, res) => {
+	// Corrected routea
+	const result = await newRoom.getAllApartments();
+	res.send(result);
+});
+
+ApartRouter.delete('/api/deleterooms/:noteIda', async (req, res) => {
+	try {
+		const result = await newRoom.deleteApartments(); // Fix the function call
+		res.json(result);
+	} catch (error) {
+		console.error('Error deleting notes:', error.message);
+		res.status(500).json({ error: 'Internal Server Error' });
+	}
+});
+ApartRouter.patch('/api/updatrooms/:id', async (req, res) => {
+	const noteId = req.params.id; // Corrected from req.params.noteId to req.params.id
+	const updatedData = req.body;
+
+	try {
+		const updatedApartments = await newRoom.updateApartment(noteId, updatedData);
+
+		// Assuming you want to send the updated note back to the client
+		res.json(updatedApartments);
+	} catch (error) {
+		if (error.message === 'Note not found') {
+			return res.status(404).json({ error: 'Note not found' });
+		}
+
+		console.error('Error updating note:', error.message);
+		res.status(500).json({ error: 'Internal server error' });
+	}
+});
+
+module.exports = ApartRouter;
