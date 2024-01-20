@@ -19,7 +19,7 @@ app.use('/', require('./users'));
 app.use('/catalog', require('./users/catalog'));
 app.use('/user', require('./api/router/user.router'));
 // app.use('/user', require('./api/models/user.model'))
-app.use('/notes', require('./api/router/notes.router'));
+app.use('/notePhoto', require('./api/router/notes.router'));
 app.use('/apartments', require('./api/router/apartmens.router'));
 app.use('/villa', require('./api/router/villa.router'));
 app.use('/appeal', require('./api/router/appeal.router'));
@@ -32,6 +32,9 @@ app.use('/deleteroom', require('./api/router/apartmens.router'));
 app.use('/updatehouse', require('./api/router/notes.router'));
 app.use('/updataroom', require('./api/router/apartmens.router'));
 app.use('/updatavilla', require('./api/router/villa.router'));
+app.use('/photoRoom', require('./api/router/apartmens.router'));
+app.use('/photoVilla', require('./api/router/villa.router'));
+app.use('/notes', require('./api/router/notes.router'));
 
 app.use(express.json());
 app.use(cors()); // Enable CORS

@@ -89,17 +89,18 @@
 	</head>
 	<body>
 		<form id="noteForm" class="apartmentForm">
-			<label for="Name3">Ім'я:</label>
-			<input type="text" id="Name3" required />
+			<label for="nameVilla">Ім'я:</label>
+			<input type="text" id="nameVilla" required />
 
-			<label for="Surname3">Прізвище:</label>
-			<textarea id="Surname3" required></textarea>
+			<label for="surnameVilla">Прізвище:</label>
+			<textarea id="surnameVilla" required></textarea>
 
-			<label for="price3">Ціна:</label>
-			<input type="number" id="price3" required />
+			<label for="price">Ціна:</label>
+			<input type="number" id="price" required />
 
-			<label for="residence3">Місце знаходження та кількість кімнат</label>
-			<input type="text" id="residence3" required />
+			<label for="residence">Місце знаходження та кількість кімнат</label>
+			<input type="text" id="residence" required />
+			<input type="file" id="photo" accept="image/*" />
 
 			<button type="submit">Create Villa</button>
 
@@ -117,16 +118,18 @@
 				.addEventListener('submit', async function (event) {
 					event.preventDefault();
 
-					const name3 = document.getElementById('Name3').value;
-					const surname3 = document.getElementById('Surname3').value;
-					const price3 = document.getElementById('price3').value;
-					const residence3 = document.getElementById('residence3').value;
+					const nameVilla = document.getElementById('nameVilla').value;
+					const surnameVilla = document.getElementById('surnameVilla').value;
+					const price = document.getElementById('price').value;
+					const residence = document.getElementById('residence').value;
+					const photo = document.getElementById('photo').value;
 
 					if (
-						name3.trim() === '' ||
-						surname3.trim() === '' ||
-						price3.trim() === '' ||
-						residence3.trim() === ''
+						nameVilla.trim() === '' ||
+						surnameVilla.trim() === '' ||
+						price.trim() === '' ||
+						residence.trim() === '' ||
+						photo.trim() === ''
 					) {
 						console.error('Error: All fields are required');
 						return;
@@ -138,7 +141,13 @@
 							headers: {
 								'Content-Type': 'application/json',
 							},
-							body: JSON.stringify({ name3, surname3, price3, residence3 }),
+							body: JSON.stringify({
+								nameVilla,
+								surnameVilla,
+								price,
+								residence,
+								photo,
+							}),
 						});
 
 						if (!response.ok) {
@@ -151,10 +160,11 @@
 						console.error('Error:', error.message);
 					}
 
-					document.getElementById('Name3').value = '';
-					document.getElementById('Surname3').value = '';
-					document.getElementById('price3').value = '';
-					document.getElementById('residence3').value = '';
+					document.getElementById('nameVilla').value = '';
+					document.getElementById('surnameVilla').value = '';
+					document.getElementById('price').value = '';
+					document.getElementById('residence').value = '';
+					document.getElementById('photo').value = '';
 				});
 		</script>
 	</body>

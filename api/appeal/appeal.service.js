@@ -1,8 +1,8 @@
 const AppealRepository = require('./appeal.repository');
 const AppealService = {
-	createn: async (applea, number) => {
+	createAppeal: async (appeal, number) => {
 		try {
-			return await AppealRepository.createApplea(applea, number);
+			return await AppealRepository.createAppeal(appeal, number);
 		} catch (error) {
 			console.log('Error when you create notes', error.message);
 			throw error;

@@ -1,13 +1,14 @@
 const Note = require('../../api/models/notes.model');
 
 const NotesRepository = {
-	createNote: async (Name, Surname, price, residence) => {
+	createNote: async (Name, Surname, price, residence, photo) => {
 		try {
 			const newNote = new Note({
 				Name,
 				Surname,
 				price,
 				residence,
+				photo,
 			});
 
 			await newNote.save();
@@ -28,6 +29,15 @@ const NotesRepository = {
 		}
 	},
 
+	getPhoto: async id => {
+		try {
+			const note = await Note.findById(id);
+			return note.photo;
+		} catch (error) {
+			console.error('Repo error getting photo: ', error.message);
+			throw error;
+		}
+	},
 	deleteNotes: async () => {
 		try {
 			return await Note.deleteMany({}); // Use deleteMany to delete all documents

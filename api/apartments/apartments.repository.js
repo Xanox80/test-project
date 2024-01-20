@@ -1,16 +1,16 @@
 const Rooms = require('../../api/models/aparments.model');
 
 const ApartRepository = {
-	createroom: async (name2, surname2, price2, residence2) => {
+	createRoom: async (nameRoom, surnameRoom, price, residence) => {
 		try {
-			const newroom = new Rooms({
-				name2,
-				surname2,
-				price2,
-				residence2,
+			const newRoom = new Rooms({
+				nameRoom,
+				surnameRoom,
+				price,
+				residence,
 			});
 
-			await newroom.save();
+			await newRoom.save();
 
 			return { success: true, message: 'Note created successfully!' };
 		} catch (error) {
@@ -24,6 +24,15 @@ const ApartRepository = {
 		} catch (error) {
 			console.error('Error getting: ', error.message);
 			return { success: false, message: 'Internal server error' };
+		}
+	},
+	getPhotoRoom: async id => {
+		try {
+			const note = await Rooms.findById(id);
+			return note.photo;
+		} catch (error) {
+			console.error('Repo error getting photo: ', error.message);
+			throw error;
 		}
 	},
 

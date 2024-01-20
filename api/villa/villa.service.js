@@ -1,8 +1,13 @@
 const VillaRepository = require('../../api/villa/villa.repository');
 const VillaService = {
-	createnvilla: async (name3, surname3, price3, residence3) => {
+	createVilla: async (nameVilla, surnameVilla, price, residence) => {
 		try {
-			return await VillaRepository.createvilla(name3, surname3, price3, residence3);
+			return await VillaRepository.createVilla(
+				nameVilla,
+				surnameVilla,
+				price,
+				residence
+			);
 		} catch (error) {
 			console.log('Error when you create notes', error.message);
 			throw error;
@@ -12,9 +17,14 @@ const VillaService = {
 		try {
 			return await VillaRepository.getAllVilla();
 		} catch (error) {
-			console.log('Error when getting notes', error.message);
+			console.log('Error when getting Villa Photo', error.message);
 			throw error;
 		}
+	},
+	getPhotoVilla: async id => {
+		try {
+			return await VillaRepository.getPhotoVilla(id);
+		} catch (error) {}
 	},
 
 	deleteVilla: async () => {

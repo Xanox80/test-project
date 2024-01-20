@@ -1,16 +1,17 @@
 const Villa = require('../../api/models/villa.model');
 
 const VillaRepository = {
-	createvilla: async (name3, surname3, price3, residence3) => {
+	createVilla: async (nameVilla, surnameVilla, price, residence, photo) => {
 		try {
-			const newvilla = new Villa({
-				name3,
-				surname3,
-				price3,
-				residence3,
+			const newVilla = new Villa({
+				nameVilla,
+				surnameVilla,
+				price,
+				residence,
+				photo,
 			});
 
-			await newvilla.save();
+			await newVilla.save();
 
 			return { success: true, message: 'Note created successfully!' };
 		} catch (error) {

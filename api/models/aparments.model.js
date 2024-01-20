@@ -1,25 +1,30 @@
 const mongoose = require('mongoose');
 
-const noteSchema2 = new mongoose.Schema({
-	name2: {
+const RoomSchema = new mongoose.Schema({
+	nameRoom: {
 		type: String,
 		required: true,
 	},
-	surname2: {
+	surnameRoom: {
 		type: String,
 		required: true,
 	},
-	price2: {
+	price: {
 		type: Number,
 		required: true, // Corrected from 'required2'
 	},
-	residence2: {
+	residence: {
 		type: String,
 		required: true,
+	},
+	photoRoom: {
+		data: Buffer,
+		type: String,
+		required: false,
 	},
 });
 
 // Assuming you have a Mongoose model named 'Note' for apartments
-const Rooms = mongoose.model('apartments', noteSchema2);
+const Rooms = mongoose.model('apartments', RoomSchema);
 
 module.exports = Rooms;

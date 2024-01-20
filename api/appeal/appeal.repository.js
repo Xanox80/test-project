@@ -1,14 +1,14 @@
 const Appeal = require('../../api/models/appeal.model');
 
 const AppealRepository = {
-	createApplea: async (appeal, number) => {
+	createAppeal: async (appeal, number) => {
 		try {
-			const newNote4 = new Appeal({
+			const newAppeal = new Appeal({
 				appeal,
 				number,
 			});
 
-			await newNote4.save();
+			await newAppeal.save();
 
 			return { success: true, message: 'Note created successfully!' };
 		} catch (error) {

@@ -223,10 +223,11 @@
 
 						for (const data of responseData) {
 							const noteDiv = document.createElement('div');
-							noteDiv.innerHTML = `<strong>Name:</strong><p id="name">${data.Name}</p><br>
-               <strong>Surname:</strong><p id="surname">${data.Surname}</p><br>
+							noteDiv.innerHTML = `<strong>Name:</strong><p id="Name">${data.Name}</p><br>
+               <strong>Surname:</strong><p id="Surname">${data.Surname}</p><br>
                <strong>Price:</strong><p id="price">${data.price}</p><br>
                <strong>Residence:</strong><p id="residence">${data.residence}</p><br><br>
+			   <img src="/notePhoto/api/getPhoto/${data._id}" alt="photo"><br>
                <div><button class="edit-btn">Edit</button><button class="delete-btn">Delete</button></div>
                <div><button class="confirm-btn" style="display:none;">Confirm</button></div>`;
 
@@ -249,9 +250,10 @@
 							// Edit button functionality
 							const editBtn = noteDiv.querySelector('.edit-btn');
 							const confirmBtn = noteDiv.querySelector('.confirm-btn');
-							const Name = noteDiv.querySelector('#name');
-							const Surname = noteDiv.querySelector('#surname');
+							const Name = noteDiv.querySelector('#Name');
+							const Surname = noteDiv.querySelector('#Surname');
 							const price = noteDiv.querySelector('#price');
+							const photo = noteDiv.querySelector('#photo')
 							const residence = noteDiv.querySelector('#residence');
 
 							editBtn.addEventListener('click', function () {
@@ -259,6 +261,7 @@
 								Surname.contentEditable = true;
 								price.contentEditable = true;
 								residence.contentEditable = true;
+								photo.contentEditable = true;
 								confirmBtn.style.display = 'inline';
 							});
 
@@ -268,16 +271,18 @@
 									Surname.contentEditable = false;
 									price.contentEditable = false;
 									residence.contentEditable = false;
+									photo.contentEditable = false;
 									confirmBtn.style.display = 'none';
 
 									await sendRequest(
 										'PATCH',
-										'/updatehouse/api/updatahouse/' + data._id,
+										'/updatehouse/api/updateNote/' + data._id,
 										{
 											Name: Name.textContent,
 											Surname: Surname.textContent,
 											price: price.textContent,
 											residence: residence.textContent,
+											photo: photo.textContent,
 										}
 									);
 								} catch (error) {
@@ -300,7 +305,7 @@
 				try {
 					const responseData1 = await sendRequest(
 						'GET',
-						'/getroom/api/getAllroom'
+						'/getroom/api/getAllRoom'
 					);
 
 					if (Array.isArray(responseData1)) {
@@ -311,10 +316,11 @@
 
 						for (const data of responseData1) {
 							const noteDiv1 = document.createElement('div');
-							noteDiv1.innerHTML = `<strong>name:</strong><p id="name2">${data.name2}</p><br>
-               <strong>surname:</strong><p id="surname2">${data.surname2}</p><br>
-               <strong>Price:</strong><p id="price2">${data.price2}</p><br>
-               <strong>Residence:</strong><p id="residence2">${data.residence2}</p><br><br>
+							noteDiv1.innerHTML = `<strong>name:</strong><p id="name">${data.nameRoom}</p><br>
+               <strong>surname:</strong><p id="surname">${data.surnameRoom}</p><br>
+               <strong>Price:</strong><p id="price">${data.price}</p><br>
+               <strong>Residence:</strong><p id="residence">${data.residence}</p><br><br>
+			   <img src ="/photoRoom/api/getPhotoApartment/${data._id}" alt="photo"><br>
                <div><button class="edit-btn2">Edit</button><button class="delete-btn2">Delete</button></div>
                <div><button class="confirm-btn2" style="display:none;">Confirm</button></div>`;
 
@@ -340,35 +346,40 @@
 							// Edit button functionality
 							const editBtn2 = noteDiv1.querySelector('.edit-btn2');
 							const confirmBtn2 = noteDiv1.querySelector('.confirm-btn2');
-							const name2 = noteDiv1.querySelector('#name2');
-							const surname2 = noteDiv1.querySelector('#surname2');
-							const price2 = noteDiv1.querySelector('#price2');
-							const residence2 = noteDiv1.querySelector('#residence2');
+							const nameRoom = noteDiv1.querySelector('#name');
+							const surnameRoom = noteDiv1.querySelector('#surname');
+							const price = noteDiv1.querySelector('#price');
+							const residence = noteDiv1.querySelector('#residence2');
+							const photo = noteDiv1.querySelector('#photo');
 
 							editBtn2.addEventListener('click', function () {
-								name2.contentEditable = true;
-								surname2.contentEditable = true;
-								price2.contentEditable = true;
-								residence2.contentEditable = true;
+								nameRoom.contentEditable = true;
+								surnameRoom.contentEditable = true;
+								price.contentEditable = true;
+								residence.contentEditable = true;
+								photo.contentEditable = true;
 								confirmBtn2.style.display = 'inline';
+
 							});
 
 							confirmBtn2.addEventListener('click', async function () {
 								try {
-									name2.contentEditable = false;
-									surname2.contentEditable = false;
-									price2.contentEditable = false;
-									residence2.contentEditable = false;
+									nameRoom.contentEditable = false;
+									surnameRoom.contentEditable = false;
+									price.contentEditable = false;
+									residence.contentEditable = false;
+									photo.contentEditable = false;
 									confirmBtn2.style.display = 'none';
 
 									await sendRequest(
 										'PATCH',
-										'/updataroom/api/updatarooms/' + data._id,
+										'/updataroom/api/updaterooms/' + data._id,
 										{
-											name2: name2.textContent,
-											surname2: surname2.textContent,
-											price2: price2.textContent,
-											residence2: residence2.textContent,
+											nameRoom: nameRoom.textContent,
+											surnameRoom: surnameRoom.textContent,
+											price: price.textContent,
+											residence: residence.textContent,
+											photo: photo.textContent,
 										}
 									);
 								} catch (error) {
@@ -405,10 +416,11 @@
 
 						for (const data of responseData2) {
 							const noteDiv2 = document.createElement('div');
-							noteDiv2.innerHTML = `<strong>Name:</strong><p id="name3">${data.name3}</p><br>
-               <strong>Surname:</strong><p id="surname3">${data.surname3}</p><br>
-               <strong>Price:</strong><p id="price3">${data.price3}</p><br>
-               <strong>Residence:</strong><p id="residence3">${data.residence3}</p><br><br>
+							noteDiv2.innerHTML = `<strong>Name:</strong><p id="name3">${data.nameVilla}</p><br>
+               <strong>Surname:</strong><p id="surname3">${data.surnameVilla}</p><br>
+               <strong>Price:</strong><p id="price3">${data.price}</p><br>
+               <strong>Residence:</strong><p id="residence3">${data.residence}</p><br><br>
+			   <img src = "/photoVilla/api/getPhotoVilla/${data._id}" alt="photo"><br>
                <div><button class="edit-btn3">Edit</button><button class="delete-btn3">Delete</button></div>
                <div><button class="confirm-btn3" style="display:none;">Confirm</button></div>`;
 
@@ -422,7 +434,7 @@
 										'DELETE',
 										'/deletevilla/api/deleteVilla/' + data._id
 									);
-									noteDiv1.remove();
+									noteDiv2.remove();
 								} catch (error) {
 									console.error(
 										'Error deleting apartment:',
@@ -434,35 +446,39 @@
 							// Edit button functionality
 							const editBtn3 = noteDiv2.querySelector('.edit-btn3');
 							const confirmBtn3 = noteDiv2.querySelector('.confirm-btn3');
-							const name3 = noteDiv2.querySelector('#name3');
-							const surname3 = noteDiv2.querySelector('#surname3');
-							const price3 = noteDiv2.querySelector('#price3');
-							const residence3 = noteDiv2.querySelector('#residence3');
+							const nameVilla = noteDiv2.querySelector('#name3');
+							const surnameVilla = noteDiv2.querySelector('#surname3');
+							const price = noteDiv2.querySelector('#price3');
+							const residence = noteDiv2.querySelector('#residence3');
+							const photo = noteDiv2.querySelector('#photo')
 
 							editBtn3.addEventListener('click', function () {
-								name3.contentEditable = true;
-								surname3.contentEditable = true;
-								price3.contentEditable = true;
-								residence3.contentEditable = true;
+								nameVilla.contentEditable = true;
+								surnameVilla.contentEditable = true;
+								price.contentEditable = true;
+								residence.contentEditable = true;
+								photo.contentEditable = true;
 								confirmBtn3.style.display = 'inline';
 							});
 
 							confirmBtn3.addEventListener('click', async function () {
 								try {
-									name3.contentEditable = false;
-									surname3.contentEditable = false;
-									price3.contentEditable = false;
-									residence3.contentEditable = false;
+									nameVilla.contentEditable = false;
+									surnameVilla.contentEditable = false;
+									price.contentEditable = false;
+									residence.contentEditable = false;
+									photo.contentEditable = false;
 									confirmBtn3.style.display = 'none';
 
 									await sendRequest(
 										'PATCH',
 										'/updatavilla/api/updateVilla/' + data._id,
 										{
-											name3: name3.textContent,
-											surname3: surname3.textContent,
-											price3: price3.textContent,
-											residence3: residence3.textContent,
+											nameVilla: nameVilla.textContent,
+											surnameVilla: surnameVilla.textContent,
+											price: price.textContent,
+											residence: residence.textContent,
+											photo: photo.textContent,
 										}
 									);
 								} catch (error) {

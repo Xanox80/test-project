@@ -1,8 +1,14 @@
 const NotesRepository = require('../../api/notes/notes.repository');
 const NotesService = {
-	createnot: async (Name, Surname, price, residence) => {
+	createNote: async (Name, Surname, price, residence, photo) => {
 		try {
-			return await NotesRepository.createNote(Name, Surname, price, residence);
+			return await NotesRepository.createNote(
+				Name,
+				Surname,
+				price,
+				residence,
+				photo
+			);
 		} catch (error) {
 			console.log('Error when you create notes', error.message);
 			throw error;
@@ -14,6 +20,14 @@ const NotesService = {
 			return await NotesRepository.getAllNote();
 		} catch (error) {
 			console.log('Error when getting notes', error.message);
+			throw error;
+		}
+	},
+	getPhoto: async id => {
+		try {
+			return await NotesRepository.getPhoto(id);
+		} catch (error) {
+			console.log('Error getting photo: ', error.message);
 			throw error;
 		}
 	},
@@ -33,6 +47,7 @@ const NotesService = {
 			throw error;
 		}
 	},
+
 	updateNotes: async updates => {
 		try {
 			// updates - об'єкт, де ключі - це ідентифікатори записів, а значення - оновлені дані

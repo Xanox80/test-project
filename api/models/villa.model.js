@@ -1,25 +1,25 @@
 const mongoose = require('mongoose');
 
-const noteSchema3 = new mongoose.Schema({
-	name3: {
+const ViilaSchema = new mongoose.Schema({
+	nameVilla: {
 		type: String,
 		required: true,
 	},
-	surname3: {
+	surnameVilla: {
 		type: String,
 		required: true,
 	},
-	price3: {
+	price: {
 		type: Number,
 		required: true, // Corrected from 'required2'
 	},
-	residence3: {
+	residence: {
 		type: String,
 		required: true,
 	},
 });
 
 // Assuming you have a Mongoose model named 'Note' for apartments
-const Villa = mongoose.model('villa', noteSchema3);
+const Villa = mongoose.model('villa', ViilaSchema);
 
 module.exports = Villa;

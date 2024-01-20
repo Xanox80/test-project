@@ -1,8 +1,13 @@
 const ApartRepository = require('../../api/apartments/apartments.repository');
 const ApartService = {
-	creatroom: async (name2, surname2, price2, residence2) => {
+	creatRoom: async (nameRoom, surnameRoom, price, residence) => {
 		try {
-			return await ApartRepository.createroom(name2, surname2, price2, residence2);
+			return await ApartRepository.createRoom(
+				nameRoom,
+				surnameRoom,
+				price,
+				residence
+			);
 		} catch (error) {
 			console.log('Error when you create notes', error.message);
 			throw error;
@@ -31,6 +36,14 @@ const ApartService = {
 			return await ApartRepository.updateRoom(id, updatedData);
 		} catch (error) {
 			console.log('Error when you create notes', error.message);
+			throw error;
+		}
+	},
+	getPhotoRoom: async id => {
+		try {
+			return await NotesRepository.getPhotoRoom(id);
+		} catch (error) {
+			console.log('Error getting photo: ', error.message);
 			throw error;
 		}
 	},
